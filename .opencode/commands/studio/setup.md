@@ -38,6 +38,12 @@ Everything needed is in the studio plugin folder (in the project root):
   itself builds the project scaffold (infrastructure, not features) and
   opens the window — tell the owner this in one line **before** starting
   step 10, not after. Beyond that, code — only through the queue.
+- **Setup is a one-time bootstrap and stands outside the chat roles.** It
+  may run in any chat — including the concept chat — because the «Два
+  чата» rules do not exist until setup writes them. Say so in one line at
+  the start: "this is the one-time deployment; after it — concept stays
+  here (`/studio/idea`), development goes to a new chat (`/studio/start`)".
+  After the report, the chat returns to its role.
 - **Setup log:** every decision and assumption — as a row (before step 8 — in
   `docs/SETUP-PLAN.md`, then in `docs/DECISIONS.md`, `## Старт`). A repeat
   `/studio/setup` reads the log and shows what changes, it does not rewrite the
