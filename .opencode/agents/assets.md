@@ -3,6 +3,7 @@ description: Разбирает пришедшие файлы заказов п�
 mode: subagent
 model: opencode-go/glm-5.3-flash
 permissions:
+  - { action: question, resource: "*", effect: deny }
   - { action: skill, resource: "*", effect: deny }
   - { action: subagent, resource: "*", effect: deny }
 ---

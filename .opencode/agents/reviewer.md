@@ -4,6 +4,7 @@ mode: subagent
 model: opencode-go/glm-5.3
 steps: 80
 permissions:
+  - { action: question, resource: "*", effect: deny }
   - { action: edit, resource: "*", effect: deny }
   - { action: write, resource: "*", effect: deny }
   - { action: patch, resource: "*", effect: deny }

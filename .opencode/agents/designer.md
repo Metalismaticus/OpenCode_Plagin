@@ -3,6 +3,7 @@ description: Дизайнер интерфейса для пунктов пар�
 mode: subagent
 model: opencode-go/glm-5.3
 permissions:
+  - { action: question, resource: "*", effect: deny }
   - { action: edit, resource: "*", effect: deny }
   - { action: patch, resource: "*", effect: deny }
   - { action: subagent, resource: "*", effect: deny }
