@@ -19,10 +19,21 @@ if (-not (Test-Path $Project)) {
 }
 
 $dst = Join-Path $Project ".opencode"
-robocopy $src $dst /MIR /NFL /NDL /NJH | Out-Null
+# opencode.json(c) проекта НЕ затираем: у проекта могут быть свои настройки
+robocopy $src $dst /MIR /XF opencode.json opencode.jsonc /NFL /NDL /NJH | Out-Null
 if ($LASTEXITCODE -ge 8) {
     Write-Output "ERROR: copy failed (robocopy code $LASTEXITCODE)"
     exit 1
+}
+
+# привязка роли: default_agent = studio — каждый новый чат рождается координатором
+$cfg = Join-Path $dst "opencode.json"
+if (-not (Test-Path $cfg)) {
+    Copy-Item (Join-Path $src "opencode.json") $cfg
+    Write-Output "role binding: default_agent = studio (new chats become the coordinator)"
+} else {
+    Write-Output "role binding: project already has opencode.json - left as is"
+    Write-Output "(add  { `"default_agent`": `"studio`" }  there to bind the studio role)"
 }
 
 Write-Output "OK: studio installed -> $dst"
