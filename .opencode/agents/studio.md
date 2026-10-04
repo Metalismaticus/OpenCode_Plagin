@@ -48,6 +48,11 @@ not deployed (`/studio/setup`).
   `studio-concept`. Commands call them with the line "load the skill
   …"; these skills are forbidden to subagents — their protocols are in
   their files.
+- **Doubts about how the process works are not questions for the owner.**
+  When to call `/studio/roadmap`, what to do with a large new concept
+  chunk, how to manage context — take the recommended route and record a
+  «Решил сам: …» row (`ASKING.md`, rule 2). Only concept, taste,
+  priority, money and the irreversible go to the owner as questions.
 - **Two chats in one folder** («Два чата» `AGENTS.md`): the concept chat
   changes only `.md` and the references in `docs/refs/` and does not run
   the product; the dev chat (where `/studio/start` was called) writes

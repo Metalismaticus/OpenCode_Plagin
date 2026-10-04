@@ -34,8 +34,10 @@ Everything needed is in the studio plugin folder (in the project root):
   «обновить» after consent). Before «Принять» at step 7, only
   `docs/SETUP-PLAN.md`, `docs/refs/`, `docs/engine-notes.md`, and `tools/` from
   the templates are written.
-- **Do not write product code.** The engine project scaffold at step 10 is
-  infrastructure; beyond that, code — only through the queue.
+- **Do not write product code.** The single exception is step 10: the setup
+  itself builds the project scaffold (infrastructure, not features) and
+  opens the window — tell the owner this in one line **before** starting
+  step 10, not after. Beyond that, code — only through the queue.
 - **Setup log:** every decision and assumption — as a row (before step 8 — in
   `docs/SETUP-PLAN.md`, then in `docs/DECISIONS.md`, `## Старт`). A repeat
   `/studio/setup` reads the log and shows what changes, it does not rewrite the
