@@ -1,0 +1,7 @@
+# Одна норма концов строк на всех платформах (Windows autocrlf не ломает скрипты)
+* text=auto
+*.png binary
+*.jpg binary
+*.webp binary
+*.wav binary
+*.glb binary
