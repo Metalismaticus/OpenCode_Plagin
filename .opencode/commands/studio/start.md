@@ -36,10 +36,16 @@ No `docs/ROADMAP.md` — the project is not set up: offer `/studio/setup` and st
 `executor-code`, `executor-finish`, `reviewer`, `reviewer-fast`,
 `designer`, `scout`, `assets`, `reference`). **An agent did not start**
   (the model from its description is unavailable, overloaded, a startup error before the
-  first step) — call it again with the same message (each agent's model is set in its
+  first step, or the provider's usage limit) — call it again with the same message (each
+  agent's model is set in its
   `.opencode/agents/<имя>.md` file); if it is unavailable again — wait 2 minutes and try once
-  more; do not switch to "all one at a time" over an unavailable model; into the report —
-  the line «scout: модель <какая> недоступна — запущен на <какой>».
+  more; still unavailable — **the fallback agent: the same name + `-any`**
+  (`executor-code-any`, `reviewer-any`, … — same protocol, no own model:
+  it takes THIS chat's model), same message; into the report — the line
+  «<имя>: модель <какая> недоступна — после пауз запущен <имя>-any на <какой>»
+  (a mid-run death resumes the same way: files and the brief survive, the
+  continuation goes to `<имя>-any` on this chat's model);
+  do not switch to "all one at a time" over an unavailable model.
 - **Continue from `docs/BATCH.md` and the items' commits in git**, not from chat
   memory: after a break or context compaction — section 1, step 3.
 - **Questions to the owner — via dialogs** per `.opencode/studio/reference/ASKING.md`; «ждёт» and the agent's «Вопрос владельцу» block — per section 4.

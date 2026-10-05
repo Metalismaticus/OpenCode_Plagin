@@ -17,6 +17,29 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 AGENTS = os.path.normpath(os.path.join(HERE, "..", ".opencode", "agents"))
 
 
+def generate_fallbacks(agents_dir, roles):
+    """Запасные копии <роль>-any: тот же протокол, БЕЗ строки model —
+    наследуют модель сессии (координатор зовёт их при недоступности
+    основной модели). Генерируются заново при каждом запуске configure."""
+    import re as _re
+    made = 0
+    for role in roles:
+        src = os.path.join(agents_dir, role + ".md")
+        if not os.path.isfile(src):
+            continue
+        text = open(src, encoding="utf-8").read()
+        no_model = _re.sub(r"(?m)^model: .*\n", "", text, count=1)
+        no_model = _re.sub(
+            r"(?m)^(description: .*)$",
+            r"\1 · FALLBACK-копия без своей модели: наследует модель сессии (зовёт координатор, когда основная недоступна)",
+            no_model, count=1)
+        dst = os.path.join(agents_dir, role + "-any.md")
+        with open(dst, "w", encoding="utf-8", newline="") as f:
+            f.write(no_model)
+        made += 1
+    return made
+
+
 def main():
     cfg = json.load(open(os.path.join(HERE, "models.json"), encoding="utf-8"))
     provider = cfg["provider"]
@@ -37,6 +60,8 @@ def main():
     if missing:
         print("нет файлов агентов:", ", ".join(missing), file=sys.stderr)
         return 1
+    made = generate_fallbacks(AGENTS, cfg["roles"].keys())
+    print(f"fallback-копий сгенерировано: {made}")
     return 0
 
 

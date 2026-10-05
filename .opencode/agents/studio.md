@@ -12,6 +12,15 @@ permissions:
   - { action: subagent, resource: scout, effect: allow }
   - { action: subagent, resource: assets, effect: allow }
   - { action: subagent, resource: reference, effect: allow }
+  - { action: subagent, resource: executor-prep-any, effect: allow }
+  - { action: subagent, resource: executor-code-any, effect: allow }
+  - { action: subagent, resource: executor-finish-any, effect: allow }
+  - { action: subagent, resource: reviewer-any, effect: allow }
+  - { action: subagent, resource: reviewer-fast-any, effect: allow }
+  - { action: subagent, resource: designer-any, effect: allow }
+  - { action: subagent, resource: scout-any, effect: allow }
+  - { action: subagent, resource: assets-any, effect: allow }
+  - { action: subagent, resource: reference-any, effect: allow }
   - { action: skill, resource: "studio-*", effect: allow }
 ---
 
