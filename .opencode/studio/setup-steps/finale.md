@@ -1,5 +1,9 @@
 # Step 10 — skeleton and a live window
 
+This step runs **only in the dev chat**: the concept chat's setup stops
+before it — the plan is carried by `docs/SETUP-PLAN.md` (see `setup.md`,
+"Главное"/the essentials).
+
 At the end of `/studio/setup` the owner sees their game's window — grey as
 it may be. This is infrastructure, not product code: no mechanics, only a
 scene for scale. Code after this — only through the queue.

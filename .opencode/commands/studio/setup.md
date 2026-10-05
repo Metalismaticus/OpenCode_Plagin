@@ -34,16 +34,17 @@ Everything needed is in the studio plugin folder (in the project root):
   «обновить» after consent). Before «Принять» at step 7, only
   `docs/SETUP-PLAN.md`, `docs/refs/`, `docs/engine-notes.md`, and `tools/` from
   the templates are written.
-- **Do not write product code.** The single exception is step 10: the setup
-  itself builds the project scaffold (infrastructure, not features) and
-  opens the window — tell the owner this in one line **before** starting
-  step 10, not after. Beyond that, code — only through the queue.
-- **Setup is a one-time bootstrap and stands outside the chat roles.** It
-  may run in any chat — including the concept chat — because the «Два
-  чата» rules do not exist until setup writes them. Say so in one line at
-  the start: "this is the one-time deployment; after it — concept stays
-  here (`/studio/idea`), development goes to a new chat (`/studio/start`)".
-  After the report, the chat returns to its role.
+- **Do not write product code — and setup follows the role of the chat it
+  runs in.** The concept chat never builds the skeleton and never opens
+  the product, not even during setup: its setup is steps 1–9 (questions,
+  env check, documents, references, the queue) plus their document
+  commit; then stop — "steps 10–12 (the scaffold and the live window) —
+  in the dev chat: run `/studio/setup` there" (the plan waits in
+  `docs/SETUP-PLAN.md`; the next setup resumes from the first unfinished
+  step). The dev chat runs every step, including step 10: the project
+  scaffold (infrastructure, not features) and the window — announce it in
+  one line **before** starting. Beyond that, code — only through the
+  queue.
 - **Setup log:** every decision and assumption — as a row (before step 8 — in
   `docs/SETUP-PLAN.md`, then in `docs/DECISIONS.md`, `## Старт`). A repeat
   `/studio/setup` reads the log and shows what changes, it does not rewrite the
