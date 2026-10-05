@@ -1,6 +1,6 @@
 ---
 name: studio — measurements
-description: Protocol of performance measurements at the end of a /studio/start run (the «замеры» group, a busy computer, the BATCH header, the commit `Партия: замеры`) and probe frame pairs. Load when finishing a run whose «замеры» line is not «нет», or for an item with «Готово, когда: пара кадров».
+description: Protocol of performance measurements at the end of a /studio/start run (the «замеры» group, a busy computer, the BATCH header, the measurements commit, and probe frame pairs. Load when finishing a run whose «замеры» line is not «нет», or for an item with «Готово, когда» — a probe frame pair.
 ---
 
 “Section N” references mean the `/studio/start` protocol; «Бюджет

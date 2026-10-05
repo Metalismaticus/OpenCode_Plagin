@@ -1,6 +1,6 @@
 ---
 name: studio — style concept
-description: Protocol of the style concept (section 8 of /studio/idea) — a whole-frame picture or a style spec (ТЗ): topic passports, INDEX style rules, contradictions, questions. Load when a style concept is brought.
+description: Protocol of the style concept (section 8 of /studio/idea) — a whole-frame picture or a style spec (ТЗ) — topic passports, INDEX style rules, contradictions, questions. Load when a style concept is brought.
 ---
 
 “Section N” references mean the `/studio/idea` protocol; a single

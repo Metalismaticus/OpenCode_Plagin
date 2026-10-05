@@ -1,6 +1,6 @@
 ---
 name: studio — reference analysis
-description: Protocol of reference analysis in /studio/idea (section 3) — a named game, a screenshot, “как в X”: the reference agent in parallel, what to ask, what to record. Load when the owner names a reference or sends a screenshot/link.
+description: Protocol of reference analysis in /studio/idea (section 3) — a named game, a screenshot, “как в X” — the reference agent in parallel, what to ask, what to record. Load when the owner names a reference or sends a screenshot/link.
 ---
 
 “Section N” references mean the `/studio/idea` protocol; the style concept
