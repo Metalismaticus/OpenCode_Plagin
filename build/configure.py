@@ -31,7 +31,7 @@ def generate_fallbacks(agents_dir, roles):
         no_model = _re.sub(r"(?m)^model: .*\n", "", text, count=1)
         no_model = _re.sub(
             r"(?m)^(description: .*)$",
-            r"\1 · FALLBACK-копия без своей модели: наследует модель сессии (зовёт координатор, когда основная недоступна)",
+            r"\1 · FALLBACK-копия без своей модели — наследует модель сессии (зовёт координатор, когда основная недоступна)",
             no_model, count=1)
         dst = os.path.join(agents_dir, role + "-any.md")
         with open(dst, "w", encoding="utf-8", newline="") as f:
