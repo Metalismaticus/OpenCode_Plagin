@@ -6,9 +6,9 @@ agent: studio
 What we are testing: **$ARGUMENTS**
 
 (If the line above is empty or was left unsubstituted — take it from the
-owner's message.) Empty — run the full run. A name — only that test or its
-group. Read the commands and the exact test list from `docs/TESTING.md` and
-from the test suite itself: do not trust a count from memory. Questions — via
+owner's message.) Empty — run the full run. A name — only that check (item);
+an area set — the affected checks. Read the commands and the exact test list from `docs/TESTING.md`, its
+`tools/check_plan.json`, and from the test suite itself: do not trust a count from memory. Questions — via
 the `question` dialog per `.opencode/studio/reference/ASKING.md`.
 
 The testbed state in `docs/TESTING.md` — «нет»: do what the section «Что
@@ -17,8 +17,12 @@ the item on building tests stands in the queue — name its place.
 
 ## 1. Run
 
-The command — from the table in `docs/TESTING.md`; read the verdict the way
-the column «Как читать вердикт» says, and per the «Правила каркаса»
+The run — through `python -X utf8 tools/run_check.py --root <корень>` (it
+assigns the environment and the single build dir; modes item / affected /
+full — the plan and rules in `docs/TESTING.md`, «Режимы и окружение»; code 3
+= «мало места» — not red, do not retry); the checks themselves — from
+`tools/check_plan.json`. Read the verdict the way the «Как читать вердикт»
+column and the plan say, and per the «Правила каркаса»
 («Полигон»): empty output, engine not found, a hang (exit code 124), a test
 without assertions — red, not "nothing fell over". Trust the exit code only
 where it is declared honest.

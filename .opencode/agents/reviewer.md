@@ -153,12 +153,14 @@ Test windows — per the «Как открывается окно» line of `doc
      когда» is written as player steps, otherwise `[specification]`;
      no runner — `Limitation: controls checked without input — no
      runner`.
-3. Run **exactly once each**, with the commands from the table in
-   `docs/TESTING.md`:
+3. Run **exactly once each**, through `python -X utf8 tools/run_check.py
+   --root <корень или слот>` (it assigns the environment and the single
+   build dir — never set CARGO_TARGET_DIR by hands), with the checks from
+   `tools/check_plan.json`:
 
    | Route | What to run |
    |---|---|
-   | `[код]`, `[баг]` | the item's test, the full run, the quick run; the relevant long one, if it exists |
+   | `[код]`, `[баг]` | item by name, the full run, the quick run; the relevant long one, if it exists |
    | `[ui]` | the same plus screenshots — step 4 |
    | `[вид]`, `[ощущение]` | the stand, `основа` and embedding — as `[код]` (for `[вид]` — also the screenshots of step 4); the choice — the item's test, the quick run and its tag's mode |
    | `[данные]` | the item's test, the quick run and «после правки ресурсов»; do not run the full one |
@@ -166,8 +168,12 @@ Test windows — per the «Как открывается окно» line of `doc
    In all routes and in the light mode — also "code health" and "types",
    if the lines exist: seconds, no window.
 
-   **Light mode** (by the coordinator's word): the item's test, its group
-   and the quick run; do not run the full and long ones, into the
+   **Light mode** (by the coordinator's word): the item's check by name
+   (`--mode item --check <имя>`), the **affected** checks of the item's
+   areas (`--mode affected --areas <области>` — the areas per
+   `docs/TESTING.md` / the plan; unknown — run_check goes full and writes
+   the reason — quote it) and the quick run; do not run the full and long
+   ones by yourselves, into the
    report — `Limitation: light mode — the full run is at the end of the
    batch`.
 
@@ -420,7 +426,7 @@ items with screenshots, `Пресет:` — for items with rendering:
 ```
 APPROVED | APPROVED: ready for choice | CHANGES_REQUESTED
 Limitation: <what the approval is limited by: the testbed is not «есть», the look not checked, light mode> | none
-Проверки: <what was run — green / failures>; quick run clean | <first error>; code health: clean | N findings | cannot measure; types: clean | <first error> | none
+Проверки: <режимы run_check — item <имя> / affected <области> / full — зелёных/провалов, код 3 «мало места»>; quick run clean | <first error>; code health: clean | N findings | cannot measure; types: clean | <first error> | none
 Screenshots: <paths; where shot — the owner's vantage point and the canonical angles> | not needed: <why>
 Пресет: <on which graphics preset the screenshots and runs were taken; with a quality ladder — «высокие», next to it «низкие»> | the only one: no graphics settings | <which> — the stand cannot
 Кадр: look_sheet.py --sanity — clean | defect: <script line> | no mode

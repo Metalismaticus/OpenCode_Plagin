@@ -57,10 +57,18 @@ No `docs/ROADMAP.md` — the project is not set up: offer `/studio/setup` and st
   `[ощущение]` follows the same path through the sheet of variants: in this skill "`[вид]`"
   also means it, except for the "`[ощущение]` differences" at the end of 3b.
 - **Checks.** Single `/studio/start`: `reviewer` runs the full run. `/studio/start all`:
-  `reviewer-fast` — the item in **light mode**; one full and one long — at the end
+  `reviewer-fast` — the item in **light mode** (the item's check by name and
+  the **affected** checks for the item's areas — `python -X utf8
+  tools/run_check.py --mode item --check <имя>` / `--mode affected --areas
+  <области>`; the areas are taken from `docs/TESTING.md` and
+  `tools/check_plan.json`, unknown — full with the reason run_check writes);
+  one full and one long — at the end
   of the batch, in the main folder (section 6); after two culprit searches — a full
   run again on every item. The «замеры» group — not among them, but at the end of the run,
-  without a question to the owner (section 6, «Замеры»).
+  without a question to the owner (section 6, «Замеры»). All runs — through
+  `tools/run_check.py --root <путь>`: it assigns the environment and the
+  single build dir per slot (`docs/TESTING.md`, «Режимы и окружение»); exit
+  code 3 = «мало места» — stop the batch with the reason, no retry loops.
 - **No more than three rounds** of "executor → reviewer" per item step, for
   `[вид]` — also three choices (rollback from a choice to the base — 3b step 2), and no
   longer than the **item budget** for its size (the «Бюджет пункта» section
@@ -166,10 +174,17 @@ never filled or edited (a batch written into the comment is invisible to the
 protocol). The header lines (with «Последний полный прогон: не было», «Волны:
 <the «Параллельная работа» line of `docs/TESTING.md` as read at take time —
 never carried over from the sample, the comment or the previous batch>»,
+«Пишут: N · тяжёлых проверок: M» — from the same line; sequential work
+(`пишут` ≤ 1, no waves) — also «Последовательно: <почему по одному>», and for
+work in copies — «Слоты: <slot → пункт …>»,
 «Язык коммитов: <from the «Git»
 of `AGENTS.md`, or by "Language" in `COMMITS.md`>»); the table — number, wave,
 item with markers, criterion, `ждёт очереди`. The numbers are stable — `/studio/done
-кроме 3` refers to them.
+кроме 3` refers to them. **After writing the batch — the machine check
+`python -X utf8 tools/batch_check.py`** (red — its findings: rewrite the batch
+into the live part, not into the comment; «Пусто.» next to a live batch;
+parallelism parameters or the sequential-reason line missing; slot
+assignments contradictory — fix the header/rows and re-run until green).
 
 **Waves** — after writing (`scout` reads the batch from the file). `пишут` — from
 the argument, otherwise from «Параллельной работы» of `docs/TESTING.md` (`предел: N` =
@@ -183,10 +198,15 @@ each item — its own wave.
 
 The batch may touch user data (`docs/TESTING.md`) — take a copy,
 as it says there, and write it into the header. Before the first item — the **baseline
-check** (with it, it is visible which item broke the run): for `/studio/start all` a full
-run, for a single item a quick run; the testbed is not «есть» — run what there is and
+check** (with it, it is visible which item broke the run; through
+`tools/run_check.py --root <корень>` — full for `/studio/start all`, quick for a
+single item; the areas — from `tools/check_plan.json`, unknown — full with the
+reason): the testbed is not «есть» — run what there is and
 write down what limits the check. A red baseline — stop and show
 the failure, if it is not an intentionally red check from `docs/BUGS.md`.
+run_check code 3 («мало места») — stop the batch: free the caches of free
+slots (`tools/slot_pool.py clean-cache --free`) or raise the reserve with
+the owner; do not retry into a loop.
 
 ## 3. Execute one item
 
@@ -347,19 +367,26 @@ a new choice per 3b, step 2 (his words outweigh the reference; he named a varian
 (for `[данные]` there is none), its hash — the item's commit; measurements — below.
 
 **`/studio/start all`** — after the last item (the wave's merge), in the main folder,
-**one** full and one long run, then a quick one. New red (it was not there in the baseline
+**one** full and one long run, then a quick one — all through
+`python -X utf8 tools/run_check.py --root <корень> --mode full` (and `--mode
+long`, `--mode quick`; reason for the rerun — `--reason`). New red (it was not there in the baseline
 check; checks that the item rewrote per «Готово, когда» or «В документы при
 `/studio/done`», — for light, the tone and edge reference images are «снято до
 света», — were judged by the reviewer: they are not "new red" and not the culprit):
 
 1. Rerun the reddened ones up to three times: red 1–2 out of 3 — unstable,
    into «Найдено по ходу»; do not fix the product blind.
-2. In a free slot (none — create and prepare one; it will not prepare — stop
+2. In a free slot (`tools/slot_pool.py acquire --item p<N>`; none free and
+   the pool at its limit — clean the caches of free slots
+   (`clean-cache --free`) or stop
    the batch) — the reddened ones at the baseline check's hash: red there too — not from
    the batch, into «Найдено по ходу». Otherwise, in the same place, `git bisect` from that hash to
-   `main`, running **only the reddened checks** (`git bisect run`, if the exit
+   `main`, running **only the reddened checks** (in the slot — through
+   `tools/run_check.py --root <слот> --mode item --check <имя>`;
+   `git bisect run`, if the exit
    code is honest), then `git bisect reset`; the first bad commit is not
-   `Пункт N:` — into «Найдено по ходу».
+   `Пункт N:` — into «Найдено по ходу». `tools/slot_pool.py release` the slot
+   after the hunt.
 3. The culprit — in the main folder, `git revert --no-edit` of its `Пункт N:` commits,
    the new ones first. Fewer than three rounds — return the work uncommitted (`git
    restore --source=<хеш до отката> -- <файлы пункта>`), a new `executor` chain
@@ -388,7 +415,12 @@ In both cases — into the header «Последний полный прогон
 <зелёных>/<провалов> на <хеш>»; a separate commit of `docs/BATCH.md`: `Партия:
 итог запуска`, the numbers — in the body. Delete the `rounds/` folder, except `p<N>-стоп/`; keep
 `shots/` and `parked/`: the report's paths, the item lines, and `/studio/done`'s
-"before" lead to them.
+"before" lead to them. **Slots** — remove them at the end of the run via
+`python -X utf8 tools/slot_pool.py remove slot<K>` (a slot with uncommitted
+work — into the report, it is not removed); their build caches go with them
+(soon another run — `--keep-cache`). Stray build dirs (inside old copies,
+nested `.wt`, forgotten in Temp) — `tools/slot_pool.py diagnostics` lists
+paths and sizes; deleting them is the owner's manual choice, not the plugin's.
 
 **The probe frame pair** — a `[код]` item with «Готово, когда: пара кадров»
 (a renderer change, an expensive capability; after accepted light): the protocol

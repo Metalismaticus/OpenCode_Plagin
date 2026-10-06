@@ -36,7 +36,19 @@ A **worktree copy** path is named — read, edit and run everything only in it, 
    - **Frame or time** — per «Как мерить» of «Бюджет производительности»; a threshold test — into the «замеры» group; do not run it yourself (the coordinator at the end of the batch), except in trial mode. **A measurement item** — you run the probes yourself, in the main folder, per «Как мерить»; the computer is busy — measure anyway, the number marked «на занятом (<чем>) — перепроверить».
 3. **Implementation — this item only.** Launch commands the item adds or changes (tests, scenarios, the stand, probes) — per «Как открывается окно»: logic without a window; render by agents (`--quit-after N`) — the window beyond the screen edge, without focus and sound; a window for the owner — normal, with focus and sound; `always_on_top` — never.
 4. A probe measurement needed a second time — formalize it as a scenario or a testbed test and include it in «Файлы»: it will go into the item's commit.
-5. **Checks.** Run the quick run yourself: the item's test, its group, «здоровье кода» and «типы» (if the lines exist) with the commands from `docs/TESTING.md` — until green. You do not run the full run — the reviewer or the coordinator. `git status` and `git diff` on your files: no others' files or document edits may remain. «Здоровье кода» findings and red «типы» in the item's files — fix to done; in another's file («в старых строках», a call by name after a rename) — fix on your side; a file outgrows the allowance — «не удалось: код — <строка находки>» (the coordinator will schedule a cleanup). The «замеры» group — do not run anywhere.
+5. **Checks.** Run the quick run yourself — **through `python -X utf8
+   tools/run_check.py --root <корень или слот>`**: the item's check by name
+   (`--mode item --check <имя>`), then the affected checks for the item's
+   subsystems (`--mode affected --areas <области>` — the areas per
+   `docs/TESTING.md` / the plan; run_check itself escalates to full with the
+   reason when the mapping is unknown — quote its reason), then «здоровье
+   кода» and «типы» (if the lines exist) with the commands from
+   `docs/TESTING.md` — until green. Do not set CARGO_TARGET_DIR or other
+   build environment by hands — run_check assigns the same single build dir
+   for every check of this root (`../<папка проекта>.wt/targets/<слот>`);
+   always pass `--root`. run_check code 3 = «мало места»: report it as the
+   stop reason, do not retry. You do not run the full run — the reviewer or
+   the coordinator. `git status` and `git diff` on your files: no others' files or document edits may remain. «Здоровье кода» findings and red «типы» in the item's files — fix to done; in another's file («в старых строках», a call by name after a rename) — fix on your side; a file outgrows the allowance — «не удалось: код — <строка находки>» (the coordinator will schedule a cleanup). The «замеры» group — do not run anywhere.
 6. **Shots and the sheet** — for any item whose criterion is about the look (the place from «Как увидеть» or the bug entry and the canonical angles), and for the `[вид]`/`[ощущение]` steps:
    - **Frame rejects — by script:** all the round's shots — `python -X utf8 tools/look_sheet.py --sanity <png>…` (at a `[вид]` choice — also `--axis <ось>` from the passport: `форма` for shape and mass; for the global look and light — `приём`). Code 1 — a reject: fix it (the stand, the frame, the hour), do not hand it over. No mode — «Замечено вне пункта: проверки кадра нет — `/studio/setup обновить`».
    - **Open every shot and, before the numbers, write «Вижу: <снимок> — <что в кадре словами продукта: предмет, форма, края, что не так>»**, then «Против образца: <чем похоже / чем явно не похоже>» (for `[ui]` — against the spec). The model cannot see the picture — honestly: «Вижу: <снимок> — не смотрел, вид не проверен» and continue by the sheet's numbers.
@@ -60,7 +72,10 @@ A **worktree copy** path is named — read, edit and run everything only in it, 
 
 ## Round 2–3: you are alone
 
-You fix the notes, then **run the quick run yourself** (the item's test, its group, «здоровье кода», «типы») — until green; you do not run the full run. A note about a frame or the sheet — restart the stand, shoot the needed frames per your part of the «Стенд», run `look_sheet.py --sanity`; fix rejects, do not hand them over; you write the «Вижу:» lines for the reshot frames yourself, in the owner's words. The round 2–3 result is the **full format** below.
+You fix the notes, then **run the quick run yourself** (the item's check
+`run_check.py --mode item --check <имя>` and the affected
+`--mode affected --areas <области>`, «здоровье кода», «типы») — until green;
+you do not run the full run. A note about a frame or the sheet — restart the stand, shoot the needed frames per your part of the «Стенд», run `look_sheet.py --sanity`; fix rejects, do not hand them over; you write the «Вижу:» lines for the reshot frames yourself, in the owner's words. The round 2–3 result is the **full format** below.
 
 ## Never
 
@@ -81,7 +96,7 @@ No more than 20 lines (`уборка:` lines — extra, no more than 5; «Виж
 Файлы: <пути, которые пункт создал или изменил>
 Красное без исправления: <команда> → <строка провала> | неприменимо: <почему>
 Зелёное: <команда> → <итоговая строка>
-Проверки: <проверка пункта> и группа <имя> — <зелёных>/<провалов> | <первая ошибка>; здоровье: чисто | исправлено N | заметок M | мерить нечем; типы: чисто | <первая ошибка> | нет
+Проверки: item <имя> — <зелёных>/<провалов> | <первая ошибка>; affected <области> — <зелёных>/<провалов> | full — <причина эскалации run_check>; мало места (код 3): <строка остановки>; здоровье: чисто | исправлено N | заметок M | мерить нечем; типы: чисто | <первая ошибка> | нет
 Как увидеть: <1–3 шага в продукте: где (экран / место, seed, координаты) → что должно быть видно или слышно>
 Кадр: look_sheet.py --sanity — чисто | брак: <что> | нет режима
 Вижу: <снимок> — <что в кадре словами продукта: предмет, форма, края, что не так>

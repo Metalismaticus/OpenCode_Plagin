@@ -20,16 +20,24 @@ approved. A copy sees only what is committed, so the order is strict:
    wave's items `в работе · круг 1/3`) and the wave's specifications by
    name, with the message `Партия: волна W — пункты N, M`. Without it an
    executor in a copy reads the previous batch.
-3. One slot per item N. No new one yet — `git worktree add -b wave/p<N>
-   "<слот>" main`. A former one — reset per the «Набор копий» section of
-   `docs/TESTING.md`, delete the slot's old branch (`git branch -d`, one
-   taken down by a failure — `-D`). Do not take a slot whose item is
-   `ждёт` or has uncommitted work before the answer; the slot goes into
-   the item's line: `ждёт: … · слот K`.
+3. One slot per item N — assigned by the tool, not by hands:
+   `python -X utf8 tools/slot_pool.py acquire --item p<N> --branch wave/p<N>`
+   (one slot is never given to two executors; a repeated acquire of the same
+   item returns the same slot — rounds 2–3). A free slot with leftover
+   changes is not handed out silently: the pool marks it `dirty` with the
+   reason and takes another; a slot whose item is
+   `ждёт` — `park` (held with its cache; unparked when the answer arrives),
+   the slot goes into
+   the item's line: `ждёт: … · слот K`. Prepare the taken slot per the
+   «Набор копий» reset of `docs/TESTING.md`; CARGO_TARGET_DIR is assigned
+   by `run_check.py` — never by hands.
 4. All of the wave's `executor` agents — **simultaneously** (several
    subagent calls in one message, each per section 3, step 3), no more than `пишут` items: “Item N of the batch
    from `docs/BATCH.md`. Work only in the copy `<полный путь слота>`:
-   first prepare it per `docs/TESTING.md`, «Параллельная работа»”, the
+   first prepare it per `docs/TESTING.md`, «Параллельная работа»; run the
+   checks through `python -X utf8 tools/run_check.py --root <слот>
+   --mode item --check <имя>` / `--mode affected --areas <области>`”,
+   the
    brief's path — as in section 3, step 3, for `[ui]` — the
    specification's path, for `[вид]` — the step and the full path of the
    technique library `.opencode/studio/reference/LOOK_TECHNIQUES.md`
@@ -55,11 +63,14 @@ approved:
 3. In `docs/BATCH.md` — `готов к проверке` and the lines per section 3,
    step 7; the commit `Партия: пункт N готов к проверке`; push if
    commits are being pushed.
-4. **Clean the merged slot's build cache** — its `target` and
-   `src-tauri\target` (~10 GB each on a Tauri-scale stack): the item's work
-   is already in `main`, and uncleaned caches of merged items accumulate
-   through the whole run. The slot itself stays for reuse; its build
-   regenerates from the shared cargo cache (~90 s).
+4. **Release the merged slot** — `python -X utf8 tools/slot_pool.py
+   release slot<K>`: the slot goes back to the pool for the next item, its
+   build cache (`targets/<слот>`) is KEPT — sequential items of one slot
+   build incrementally; cleaning after every merge turned each item into a
+   full rebuild. Clean a cache only on `мало места` (code 3: first
+   `slot_pool.py clean-cache --free` — free slots only) or at the end of the
+   run (`remove`). `run_check.py` code 3 during the merge checks — stop the
+   batch with the reason; no retry loops.
 
 **A `[вид]` item in a copy** merges its approved base (`основа —`) the
 same way, then the choice runs in the same slot. **Exception to the queue
@@ -72,11 +83,17 @@ gets `git show` of the variants commit, the choice — from the
 «Журнал».
 
 Remove clean slots at the end of the run, after section 6 (a slot is
-needed for the culprit hunt): `git worktree remove`, `git branch -d`; a
-slot with uncommitted work — into the report, do not delete. Checks from
+needed for the culprit hunt): `python -X utf8 tools/slot_pool.py remove
+slot<K>` — it removes the copy and its build cache (soon another run —
+`--keep-cache`); a slot with uncommitted work — into the report, do not
+delete (`slot_pool.py park` holds it). Checks from
 «Нельзя одновременно» — only in the main folder, one at a time; stand
 screenshots — in the item's copy, like the heavy ones (step 5): the old
-projects' line “снимки стенда — по одному” means the same.
+projects' line “снимки стенда — по одному” means the same. An interrupted
+run — `tools/slot_pool.py sync` first: it rebuilds the ledger from the
+actual copies WITH a report (a copy found outside the ledger is marked
+dirty “состояние неизвестно” — verify by hand, then release or park), then
+`slot_pool.py check` until consistent.
 
 **«Сбой волны»** — an item is not as independent as `scout` promised:
 return it to `ждёт очереди` with the note “повтор по одному: <причина>”

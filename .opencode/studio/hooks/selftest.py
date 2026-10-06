@@ -150,7 +150,7 @@ def check_config(results):
               and os.path.isfile(GUARD) and os.path.isfile(CONTEXT))
         # YAML-мины: ': ' внутри значения description ломает файл агента
         # («Agent X cannot run as a subagent») — проверяем всех агентов
-        agents_dir = os.path.join(HERE, "..", "agents")
+        agents_dir = os.path.join(HERE, "..", "..", "agents")
         mines = []
         for fn in sorted(os.listdir(agents_dir)):
             if not fn.endswith(".md"):

@@ -19,8 +19,8 @@ The settings live in the first line of the section «Параллельная р
 ```
 
 - **пишут** — how many batch items are written at once, each in its own
-  worktree copy; while they run, only short tests: the item's, a group, the
-  quick run.
+  worktree copy; while they run, only short tests: the item's, the affected
+  ones, the quick run.
 - **тяжёлых проверок** — how many full and long runs go at once. Usually 1:
   in `/studio/start all` the full run goes alone, at the end of the batch.
 
@@ -72,10 +72,13 @@ takes long: say roughly how long, and ask via the dialog «Запустить п
    одновременно» and in «Найдено по ходу»: «вынести в группу „замеры“»; do
    not run them in the trial.
 1. Create worktree copies of the suite — as many as `пишут`:
-   `git worktree add -b trial/s<K> "../<папка проекта>.wt/slot<K>" main`;
-   prepare each per the section «Подготовка копии».
-2. **Пишут:** the quick run and one group — in all copies at once (background
-   commands). **Тяжёлые:** the full run — simultaneously in as many copies as
+   `tools/slot_pool.py acquire --item trial<K> --branch trial/s<K>`
+   (`../<папка проекта>.wt/slot<K>`; `release` at the end); prepare each per
+   the section «Подготовка копии».
+2. **Пишут:** the quick run and the affected ones — in all copies at once
+   (through `tools/run_check.py --root <слот> --mode quick` / `--mode
+   affected --areas <области>`, background commands). **Тяжёлые:** the full
+   run — simultaneously in as many copies as
    `тяжёлых проверок` (at 1 — not needed). Into context — only the final
    lines and the time.
 3. Compare with a single run of the same in the main folder (did not pass —

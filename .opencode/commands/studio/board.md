@@ -70,8 +70,18 @@ words, without retelling details.
    script — «Код: мерить нечем → `/studio/setup обновить`» (the script
    writes the same if the baseline is missing or corrupt).
 6. **Неладно** — the block only on a finding, one line per finding:
+   - `python -X utf8 tools/batch_check.py` red (no tool — `/studio/setup
+     обновить`): the batch written into the sample comment or «Пусто.»
+     next to a live batch — «партия записана в комментарий образца —
+     `/studio/start` перепишет её в живую часть»; contradictory slot
+     assignments or the missing sequential-reason line — «слоты партии
+     не сходятся: <первая находка>»;
    - worktree copies `../<папка>.wt/…` outside the current wave
-     (`git worktree list`);
+     (`git worktree list`; no batch — `tools/slot_pool.py diagnostics`
+     names the stray build dirs with their sizes, nothing is deleted);
+   - the free space below the reserve (`tools/check_plan.json`:
+     `disk_reserve_gb`) — «диск: свободно меньше резерва — проверки
+     остановятся до чистки кэшей свободных слотов»;
    - an item `в работе` with uncommitted files — if the dev chat is not
      working right now, this is a tail left after a break; `/studio/start`
      decides what to do with it;

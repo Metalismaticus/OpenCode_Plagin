@@ -43,7 +43,7 @@ compatible as is, rename nothing.
      line «Канонические ракурсы», the column «Сколько идёт · предел», and
      the lines «сценарий игрока», «стенд ощущения», «замеры», «сборка»,
      «проверка сборки», «здоровье кода», «типы» in «Командах проверки»; the
-     probe rule in «Замерах»; the sections `## Здоровье кода` (after
+     probe rule in «Замерах»; the subsection «Режимы и окружение» (item/affected/full, the single build dir per root/slot, the ban on manual CARGO_TARGET_DIR) and the new «Набор копий»/«Диск» rules (a slot is a resource — the pool is `tools/slot_pool.py`; caches are NOT cleaned after every merge, only registered inactive ones on «мало места» or at the end of the run); the table rows «проверка пункта (item)», «affected», «полная (full)» replace the old row «группа»; the sections `## Здоровье кода` (after
      «Замеров»), `## Сценарии игрока`, `## Стенд` (was `## Стенд вида`; in
      the «вид» part — the template's lines about the frame's hour from the
      passport, the `concept` preset, gauges only on the reviewer's
@@ -138,7 +138,13 @@ compatible as is, rename nothing.
    `docs/orders/` or it is a game), `tools/model_check.py` (3D: there is
    `docs/orders/model3d.md` or `.glb`/`.gltf` models in the project; 3D
    without the `model3d` kind — into the report «завести вид `model3d` —
-   `/studio/order model3d`»), `docs/.gdignore` for Godot, README (p. 7); no
+   `/studio/order model3d`»), `docs/.gdignore` for Godot, README (p. 7); the
+   operations tools `tools/studio_ops.py`, `tools/run_check.py`,
+   `tools/slot_pool.py`, `tools/batch_check.py`, `tools/ops_report.py` —
+   like the neighbors; `tools/check_plan.json` — like `perf_ref.json`: do
+   not replace an existing one, append the missing lines (checks — into its
+   `checks` list, the reserve/pool/cargo — by the `testing.md` rules), keep
+   the project's lines; no
    «Прогноз» section in `docs/DECISIONS.md` — insert it from the template.
    The `tools/` scripts that exist but differ from the templates — replace
    with the template ones (in the same list); `tools/perf_ref.json` — do not
@@ -306,6 +312,34 @@ compatible as is, rename nothing.
     до « — »>; уборок в «Найдено по ходу»: N — встанут в очередь через
     /studio/idea» (the queue does not see them yet — do not write «0 уборок
     в очереди» from `--summary`).
+
+## Old installs: the transition (after the batch)
+
+The plugin's new operations layer reaches a deployed project through
+`/studio/setup обновить` — AFTER `/studio/done` (a running batch is never
+updated, p. 1). What the transition consists of:
+
+1. **The new `tools/`** (p. 5): `studio_ops.py`, `run_check.py`,
+   `slot_pool.py`, `batch_check.py`, `ops_report.py`, and
+   `check_plan.json` (the project's existing plan lines are kept — the
+   checks are APPENDED to its `checks` list with their modes and areas).
+2. **`docs/TESTING.md`** (p. 2): the row «группа» → the rows «проверка
+   пункта (item)», «affected», «полная (full)»; the subsection «Режимы и
+   окружение»; the new «Набор копий»/«Диск» rules. The old
+   CARGO_TARGET_DIR notes in the project's own subsections («Подготовка
+   копии», scripts) are the project's own lines — into the difference file
+   (p. 3): the environment is now assigned by `run_check.py`, the build
+   dir is one per root/slot in `../<проект>.wt/targets/`.
+3. **The old slot copies and build caches** (`../<проект>.wt/slot1…N`, their
+   `target`/`src-tauri/target`, forgotten `target-*` in Temp) — are NOT
+   deleted by the plugin: after the batch `tools/slot_pool.py diagnostics`
+   lists their paths and sizes, deleting them is the owner's choice. Then
+   the pool is initialized cleanly: `slot_pool.py sync`, `check` — and the
+   next batch works through `acquire/release`.
+4. The executor chain (prep/code/finish) lived in the plugin, not in the
+   project — nothing to migrate in the project's files; only `models.json`
+   routing changed on the plugin side, and `configure.py` now refuses
+   inconsistent configs without partial rewrites.
 
 ## Bloated code — little by little
 

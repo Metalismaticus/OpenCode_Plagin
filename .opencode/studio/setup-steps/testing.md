@@ -14,7 +14,14 @@ This is `/studio/setup`'s work, not a question for the owner. Think about
 3. **Testbed** — behavior, not lines of code: the checks launch the real
    product (or its real systems) and compare numbers and states. Where it
    lives, what the check and the group are called, how long a full run takes,
-   what goes into «долгие». A game — determinism: seed, a fixed step, a
+   what goes into «долгие». Every check — also into `tools/check_plan.json`
+   (laid out by the template): `name`, `cmd` — a list of arguments without a
+   shell, `modes` — quick/item/affected/full/long, `areas` — the subsystems
+   for affected (its composition lives ONLY here), `timeout_s`; the stack's
+   build settings — `cargo.enabled` (Rust only: then `run_check.py` assigns
+   the single CARGO_TARGET_DIR per root/slot — never by hands), the disk
+   reserve — `disk_reserve_gb`, the slot-pool limit — `pool.max_slots`. A
+   game — determinism: seed, a fixed step, a
    headless run, and **player scenarios via input** (`## Сценарии игрока` of
    the template: they press actions and buttons by text, assert by object
    names) — with what the stack can deliver input and where `tests/scenarios/`
@@ -101,7 +108,7 @@ after «Каркас и быстрая проверка»; in an existing one �
 The pieces — for this stack, for example:
 
 1. the testbed's skeleton per «Правила каркаса» of `docs/TESTING.md`: all the
-   checks, one by name, the group; exit code 0 / 1 / 2 (green / failure / no
+   checks, one by name, the affected sets; exit code 0 / 1 / 2 (green / failure / no
    such check); the result «зелёных / провалов» with every failure by name;
    **every check — its own file** (`tests/checks/<имя>.*`), shared helpers —
    `tests/lib/`, the runner finds the checks itself, without a shared list:
@@ -110,7 +117,13 @@ The pieces — for this stack, for example:
    items went one at a time); checks with a frame or time threshold — in the
    group «замеры», the runner can skip it with an explicit line («Нельзя
    одновременно» of `docs/TESTING.md`); a time limit on every command;
-   windows — per «Как открывается окно»;
+   windows — per «Как открывается окно»; every check — into
+   `tools/check_plan.json` (name, cmd list, modes, areas): through it
+   `run_check.py` runs them with the single environment and build dir, and
+   `slot_pool.py`/`run_check.py` read the disk reserve and the pool limit;
+   areas for affected are composed HERE — subsystems of this product (what a
+   UI item touches, what a save item touches), an incomplete set does not
+   get written: in doubt the check goes into `full` instead;
 2. the first real check of the core's main system — red if the system is
    broken on purpose;
 3. for a game — the player scenario runner (`## Сценарии игрока`, codes 0 / 1

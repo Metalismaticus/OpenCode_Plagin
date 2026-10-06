@@ -38,6 +38,16 @@ not deployed (`/studio/setup`).
   `assets`; reference analysis — `reference`. Subagents are launched by
   the subagent tool by name; their models are set in their files
   `.opencode/agents/<name>.md` (routing — `build/models.json`).
+- **Checks, slots, disk and the batch ledger — the project's machine tools**
+  (laid out by `/studio/setup`): checks run through
+  `tools/run_check.py --root <путь>` (it assigns the environment and the
+  single build dir per root/slot; modes item/affected/full —
+  «Режимы и окружение» of `docs/TESTING.md`); slots — `tools/slot_pool.py`
+  (acquire/release/park/sync; a slot is a resource, not an item number);
+  the batch state — `tools/batch_check.py` after writing the batch; the
+  disk reserve and check plan — `tools/check_plan.json`. Manual env
+  assembly (CARGO_TARGET_DIR by hands, relative paths) and per-item
+  worktree creation are not used.
 - **The owner's words in this chat** «делай» / «делай всё» / «сделай
   уборку» — mean the `/studio/start` protocol: read
   `.opencode/commands/studio/start.md` and follow it by sections, not
