@@ -55,6 +55,11 @@ approved:
 3. In `docs/BATCH.md` — `готов к проверке` and the lines per section 3,
    step 7; the commit `Партия: пункт N готов к проверке`; push if
    commits are being pushed.
+4. **Clean the merged slot's build cache** — its `target` and
+   `src-tauri\target` (~10 GB each on a Tauri-scale stack): the item's work
+   is already in `main`, and uncleaned caches of merged items accumulate
+   through the whole run. The slot itself stays for reuse; its build
+   regenerates from the shared cargo cache (~90 s).
 
 **A `[вид]` item in a copy** merges its approved base (`основа —`) the
 same way, then the choice runs in the same slot. **Exception to the queue
@@ -62,8 +67,8 @@ order:** after merging the base, the item does not hold up the queue —
 the following items merge while its choice runs; the variants commit
 waits in `wave/p<N>`. After the choice (section 3b, step 3) — in the slot
 `git rebase main`, «встроить вариант X», merge. Conflict or red — «Сбой
-волны», but the retry — with «встроить» in the main folder: the `executor`
-chain gets `git show` of the variants commit, the choice — from the
+волны», but the retry — with «встроить» in the main folder: `executor`
+gets `git show` of the variants commit, the choice — from the
 «Журнал».
 
 Remove clean slots at the end of the run, after section 6 (a slot is
