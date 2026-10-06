@@ -60,8 +60,8 @@ technique.
    toward a white sky, edge fog hides only the seam “area ↔ distant view”
    — «Решил сам [видно]» in «Принято по умолчанию» and a `DECISIONS:` line
    in «В документы при `/studio/done`»; cancel — at `/studio/done`.
-   **«выбор K/3»:** the `executor` chain — `executor-code` makes 2–4
-   variants on top of the base, `executor-finish` — screenshots and the
+   **«выбор K/3»:** `executor` makes 2–4
+    variants on top of the base, and its own screenshots and the
    sheet: at choice 1 at least two — **with different techniques** from
    the passport's «Как сделано у образца» (in the «Лист»: “A — приём
    <имя>; B — приём <имя>”), the number vocabulary of one technique — only
@@ -168,7 +168,7 @@ frame of each variant itself, and writes to the item in `docs/BATCH.md`
 2–3 lines «Вижу: <кадр> — <что в нём словами продукта>» and «Против
 образца: …». Clearly wrong (an empty or gray frame, the wrong subject,
 edges where the reference is soft, variants not differing) — do not
-choose: `executor-code` with these lines verbatim (a round or a «смена
+choose: `executor` with these lines verbatim (a round or a «смена
 способа», section 3, step 6). **The first line — «Вижу: REF — …»:** the
 reference (and its crop) lacks the topic's subject (for the sky — a
 character, for the spruce — grass; for a light topic the subject is the
@@ -181,7 +181,7 @@ variants are nearly identical either — by the `--sanity` line “почти
 differences, and for light and tone those are exactly the axis; by eye —
 only empty, gray, wrong subject; and a sheet where `look_sheet.py`
 returned code 1 — with `--axis форма` the JSON's `defects` says “варианты
-различаются только оттенком” (an edge map) — `executor-code`: “spread them
+различаются только оттенком” (an edge map) — `executor`: “spread them
 across techniques”; `warnings` (REF proportions without `--ref-crop`,
 “на грани”, “только оттенком” without the axis) and `notes` (with `--axis
 приём` variants of one shape, different tone — as intended for light and
@@ -207,8 +207,8 @@ chosen by the coordinator. Nothing left to take — section 6.
 - the stand — the “ощущение” part, the step and the commit — `стенд
   ощущения`; «Смотреть самому» — only by the stand's screenshots, if
   there are any;
-- the choice: `executor-code` — 2–4 presets on keys 1–4 of the debug
-  build, `executor-finish` — the variants sheet
+- the choice: `executor` — 2–4 presets on keys 1–4 of the debug
+   build, and the variants sheet
   `docs/refs/<тема>/sheet-<дата>.md` (for sound — also
   `variant-<дата>-<буква>.wav`); `reviewer` — mode `[ощущение]`; the
   coordinator — as in step 3, by the passport's assertions (“Pairwise”)

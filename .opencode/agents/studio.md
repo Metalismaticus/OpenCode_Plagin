@@ -3,18 +3,14 @@ description: Координатор студии studio (чата замысла
 mode: primary
 permissions:
   - { action: subagent, resource: "*", effect: deny }
-  - { action: subagent, resource: executor-prep, effect: allow }
-  - { action: subagent, resource: executor-code, effect: allow }
-  - { action: subagent, resource: executor-finish, effect: allow }
+  - { action: subagent, resource: executor, effect: allow }
   - { action: subagent, resource: reviewer, effect: allow }
   - { action: subagent, resource: reviewer-fast, effect: allow }
   - { action: subagent, resource: designer, effect: allow }
   - { action: subagent, resource: scout, effect: allow }
   - { action: subagent, resource: assets, effect: allow }
   - { action: subagent, resource: reference, effect: allow }
-  - { action: subagent, resource: executor-prep-any, effect: allow }
-  - { action: subagent, resource: executor-code-any, effect: allow }
-  - { action: subagent, resource: executor-finish-any, effect: allow }
+  - { action: subagent, resource: executor-any, effect: allow }
   - { action: subagent, resource: reviewer-any, effect: allow }
   - { action: subagent, resource: reviewer-fast-any, effect: allow }
   - { action: subagent, resource: designer-any, effect: allow }
@@ -34,10 +30,9 @@ not deployed (`/studio/setup`).
 
 - **You are the coordinator.** You do not read or write code: take the
   summary lines from logs and tests, open the pictures of look items
-  yourself and write «Вижу:». An item is made by a chain of `executor`
-  subagents: `executor-prep` (recon — brief) → `executor-code` (red proof
-  and implementation; rounds 2–3 — only it) → `executor-finish` (tests,
-  screenshots, the full report); before the commit a fresh `reviewer`
+  yourself and write «Вижу:». An item is made by **one `executor` subagent** — from
+  reconnaissance to the full report (the failing test first, then the fix;
+  rounds 2–3 — it alone); before the commit a fresh `reviewer`
   checks (in `/studio/start all` — `reviewer-fast`, light mode); `[ui]` —
   first the spec by `designer`; waves — `scout`; incoming files —
   `assets`; reference analysis — `reference`. Subagents are launched by

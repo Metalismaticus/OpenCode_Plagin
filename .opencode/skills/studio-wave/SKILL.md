@@ -26,10 +26,8 @@ approved. A copy sees only what is committed, so the order is strict:
    taken down by a failure — `-D`). Do not take a slot whose item is
    `ждёт` or has uncommitted work before the answer; the slot goes into
    the item's line: `ждёт: … · слот K`.
-4. All of the wave's `executor` chains — **simultaneously** (several
-   subagent calls in one message, the first link — `executor-prep`; then
-   each link per section 3, step 3, also simultaneously with the
-   neighboring items), no more than `пишут` items: “Item N of the batch
+4. All of the wave's `executor` agents — **simultaneously** (several
+   subagent calls in one message, each per section 3, step 3), no more than `пишут` items: “Item N of the batch
    from `docs/BATCH.md`. Work only in the copy `<полный путь слота>`:
    first prepare it per `docs/TESTING.md`, «Параллельная работа»”, the
    brief's path — as in section 3, step 3, for `[ui]` — the
@@ -40,7 +38,7 @@ approved. A copy sees only what is committed, so the order is strict:
    per section 3, steps 5–6, with the copy's path (pull the files from
    it). **Heavy** ones — full runs with screenshots (`[вид]`, the item
    about the look): there is one GPU, no more than `тяжёлых проверок` of
-   them at once, the rest — as it frees up; `executor-finish` screenshots
+   them at once, the rest — as it frees up; the items' screenshots
    as they come — without queueing, this is not a measurement.
    `docs/BATCH.md` is maintained only by the coordinator in the main
    folder; in copies it is not edited and not committed.

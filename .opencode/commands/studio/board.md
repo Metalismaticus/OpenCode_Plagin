@@ -38,7 +38,7 @@ words, without retelling details.
    `../<папка проекта>.wt/usage/studio-usage.jsonl` since the «Снята …» of
    the header (no batch — since the last «Снята …» in the history of
    `docs/BATCH.md`): «токены: <вход>/<выход> (кэш-чит N) · ~$X — по ролям
-   одной строкой: executor-code A %, finish B %, координатор C %» (agents
+   одной строкой: executor A %, координатор C %» (agents
    with zero — do not name); no file or lines — «токены: не записаны».
 3. **Очередь** — if `docs/ROADMAP.md` has «Этапы» — first the line «Этап N: X
    из Y пунктов · покрытие A/B» (N — the stage `идёт`; if none, the last

@@ -30,7 +30,7 @@ import * as path from "node:path"
 const PY_TIMEOUT_MS = 10_000
 
 const STUDIO_AGENTS = new Set([
-  "studio", "executor-prep", "executor-code", "executor-finish",
+  "studio", "executor",
   "reviewer", "reviewer-fast", "designer", "scout", "assets", "reference",
 ])
 

@@ -25,22 +25,22 @@ No `docs/ROADMAP.md` — the project is not set up: offer `/studio/setup` and st
 
 - **This chat is the coordinator.** It does not read or write code; from logs and checks
   it takes only the final lines; it opens the items' look pictures itself (3b,
-  «Смотреть самому»). The item is done by a **chain of `executor` subagents**:
-  `executor-prep` (recon — a brief file; "before" screenshots of the `[вид]` base) →
-  `executor-code` (red proof and implementation; **rounds 2–3 — it alone**) →
-  `executor-finish` (short checks, screenshots, the sheet, the full result);
+  «Смотреть самому»). The item is done by **one `executor` subagent** — from
+  reconnaissance to the finished result (recon in its head, no brief file;
+  the failing test first; implementation; short checks, screenshots, the
+  sheet, the full result; **rounds 2–3 — it alone**);
   before the commit
   a fresh `reviewer` checks it (in `/studio/start all` — `reviewer-fast`,
-  light mode); `[ui]` — first the `designer` specification;
-  waves — `scout`; incoming files — `assets`. Agents — by the subagent tool, by name (`executor-prep`,
-`executor-code`, `executor-finish`, `reviewer`, `reviewer-fast`,
-`designer`, `scout`, `assets`, `reference`). **An agent did not start**
+  light mode; a `малый` item — per "The essentials"); `[ui]` — first the `designer` specification;
+  waves — `scout`; incoming files — `assets`. Agents — by the subagent tool, by name (`executor`,
+  `reviewer`, `reviewer-fast`,
+  `designer`, `scout`, `assets`, `reference`). **An agent did not start**
   (the model from its description is unavailable, overloaded, a startup error before the
   first step, or the provider's usage limit) — call it again with the same message (each
   agent's model is set in its
   `.opencode/agents/<имя>.md` file); if it is unavailable again — wait 2 minutes and try once
   more; still unavailable — **the fallback agent: the same name + `-any`**
-  (`executor-code-any`, `reviewer-any`, … — same protocol, no own model:
+  (`executor-any`, `reviewer-any`, … — same protocol, no own model:
   it takes THIS chat's model), same message; into the report — the line
   «<имя>: модель <какая> недоступна — после пауз запущен <имя>-any на <какой>»
   (a mid-run death resumes the same way: files and the brief survive, the
@@ -105,10 +105,7 @@ No `docs/ROADMAP.md` — the project is not set up: offer `/studio/setup` and st
       on a choice without a base commit — to the "base" step, round 1/3; with the mark
       «возврат с выбора K на <хеш>» — the base is done only if an
       `основа —` commit exists in `<хеш>..HEAD` (otherwise — the base is on round 2/3 with a review note);
-      **chain state** — from the `…/rounds/p<N>-r<R>-…` files: the brief exists,
-      no code result — continue with `executor-code`; the code result exists, no
-      result — `executor-finish`; both exist, no verdict — `reviewer`
-      (section 3, step 5);
+      **chain state** — from the `…/rounds/p<N>-r<R>-итог.md` files: the round result exists, no verdict — `reviewer` (section 3, step 5); none — a fresh `executor`, round 1;
     - `в работе` with uncommitted non-`.md` files — do not restart;
       first section 4, "Interruption". Single `/studio/start` — a dialog «Пункт N
       прервался, правки остались — что с ними?»: «Продолжить проверкой
@@ -204,32 +201,14 @@ fully merged or taken down (`[вид]` after the base is merged — 3a).
    Its result: «Решено за вас» — to the item with the `дизайн:` tag; "В DESIGN.md
    при /studio/done" — into «В документы при `/studio/done`» with the `DESIGN:` prefix; «Вопрос
    владельцу» — section 4, do not call the `executor` chain.
-3. **The `executor` chain** — three links, each a fresh subagent; the message —
-   one line, "Item N of the batch from `docs/BATCH.md`", plus its own; the brief and
-   result paths — full ones, the coordinator names them:
-    - **`executor-prep`** — «Бриф: `../<папка проекта>.wt/rounds/p<N>-r<R>-бриф.md`»;
-      for `[ui]` — the specification path, for `[вид]` and `[ощущение]` — the step. Its
-      «не удалось» or «ждёт» — section 4; «бриф готов» — the next link;
-    - **`executor-code`** — the brief path, for `[ui]` — the specification path, for
-      `[вид]` — the step and the full path of the technique library
-      `.opencode/studio/reference/LOOK_TECHNIQUES.md` (without it the executor
-      will find only the project's empty `docs/refs/TECHNIQUES.md`); if
-      a shared-hub cleanup is already merged in the batch — also its "В документы при
-      /studio/done" line about how to add now (a check, a kind of content): only `/studio/done` edits
-      documents. Its «реализовано» — write the code result
-      in full into `../<папка проекта>.wt/rounds/p<N>-r<R>-код.md`; to the item —
-      «Как увидеть» and «Решено за вас» from it; then — the finish link;
-    - **`executor-finish`** — the brief path, the step (`[вид]`/`[ощущение]`), the
-      passport path, the same technique-library path, «Файлы» from the code result and
-      **the code result verbatim** (from `…/-код.md`). Its «готово» — the chain's result.
-    Relay nothing else. **A measurement item**
+3. **`executor`** — one fresh subagent for the whole item; the message — one line, "Item N of the batch from `docs/BATCH.md`", plus: for `[ui]` — the specification path; for `[вид]`/`[ощущение]` — the step and the full path of the technique library `.opencode/studio/reference/LOOK_TECHNIQUES.md` (without it the executor will find only the project's empty `docs/refs/TECHNIQUES.md`); the passport path; when working in a worktree copy — its path; if a shared-hub cleanup is already merged in the batch — also its "В документы при /studio/done" line about how to add now (a check, a kind of content): only `/studio/done` edits documents. Its «готово» — write the result in full into `../<папка проекта>.wt/rounds/p<N>-r<R>-итог.md`; to the item — «Как увидеть» and «Решено за вас» from it. Relay nothing else. **A measurement item**
     (its result is numbers: a stack or render probe, the price of an effect; `scout` schedules
     it alone) — by the same chain, without a dialog (the probe frame pair is judged by `/studio/done`, section 6); busy
     (step 1 of «Замеры» in section 6) — the numbers with a tag, as in step 3 there.
 4. «ждёт» or «не удалось» — from any link of the chain — section 4.
-5. «готово» (the `executor-finish` result) — write to the item «Как увидеть» and «Решено за вас» from the result,
+5. «готово» (the `executor` result) — write to the item «Как увидеть» and «Решено за вас» from the result,
     the result in full — into `../<папка проекта>.wt/rounds/p<N>-r<R>-итог.md`, and
-    start a fresh `reviewer` (light mode — `reviewer-fast`): the item number, route marker, round R/3, mode
+    start a fresh `reviewer` (light mode — `reviewer-fast`; a `малый` item — «Размер: малый» in «Подробностях» of `docs/ROADMAP.md` (absent — средний): the diff and the item's check only, no full run; `средний`/`большой` and any `[ui]`/`[вид]`/`[ощущение]` — the full review): the item number, route marker, round R/3, mode
     (per "The essentials"), for `[ui]` — the specification path, for `[вид]` — the step, the
     passport path, the same full technique-library path and the «Лист» line, «Файлы»
     and «Как увидеть» from the result, the merged
@@ -237,8 +216,8 @@ fully merged or taken down (`[вид]` after the base is merged — 3a).
     the result — as the last line.
 6. `CHANGES_REQUESTED` — `в работе · круг R/3` (after the third — section 4).
     Copy the item's files into `…/rounds/p<N>-r<R>/` (`cp --parents <файлы>
-    <туда>`). A new **`executor-code`** — the round-R brief path (no need to prepare
-    anew: prep and finish are not called on a round), the review notes verbatim,
+    <туда>`). A new **`executor`** — the round-R result path
+    (`…/rounds/p<N>-r<R>-итог.md`) and the review notes verbatim,
     "fix only them"; the short checks, the screenshots per the note, and the full
     round result — its own; for `[вид]`, where
     the «Вижу:» of two rounds in a row names the same main defect, — also: "<дефект>
@@ -252,7 +231,7 @@ fully merged or taken down (`[вид]` after the base is merged — 3a).
 7. `APPROVED` — check the result's «Файлы» against `git status`, not counting `.md`,
     `docs/refs/` (the concept chat writes there too) and what was someone else's from the
     start (section 1, step 1);
-    a mismatch — a fresh `executor-code`: "the result does not match the disk: <файлы> —
+    a mismatch — a fresh `executor`: "the result does not match the disk: <файлы> —
     include it in «Файлы» or restore it", then `reviewer`; again — `не выполнен`.
     A match — `готов к проверке · одобрен на круге R/3` (for `[вид]` — only
     after embedding, before it — the next 3b step); to «Как увидеть» — the screenshot
@@ -295,7 +274,7 @@ such items — not needed. A wave with `[вид]` — also `studio-wave`
   - order and manner of work (what first, how to show, which frame to shoot,
     how to get around an obstacle) — not a question: the recommended one, the line «Решил сам»
     (`ASKING.md`, step 2), into «Принято по умолчанию» of `docs/BATCH.md` (no
-    section — add it); the executor stopped — a new `executor-code` with it;
+    section — add it); the executor stopped — a new `executor` with it;
   - a reviewer's question attached to a verdict — the item goes by the verdict (it goes by
     the recommended one); the question — into the item's «Решено за вас» with `[видно]`;
   - "what to do" — the item is `ждёт: <вопрос>`. Single `/studio/start` — a dialog at once.
@@ -311,8 +290,8 @@ such items — not needed. A wave with `[вид]` — also `studio-wave`
 
   The answer — «Понял: …», verbatim to the item (into «В документы при `/studio/done`» — for
   `DECISIONS.md`; an answer via `/studio/need` is already there); deferred work — restore (below) and
-  a new `executor-code` with the answer verbatim (the round's brief is the same — do not call prep
-  anew); «пока не знаю» — as in section 6. A "yes"
+  a new `executor` with the answer verbatim (the round's result path is
+  the same); «пока не знаю» — as in section 6. A "yes"
   for Pillow is installed by the coordinator (`python -m pip install pillow` with a time
   limit); the line for «Окружение» — into «В документы при `/studio/done`».
 - **«не удалось» or three rounds without approval** — restore only
@@ -344,7 +323,7 @@ such items — not needed. A wave with `[вид]` — also `studio-wave`
   .wt/parked/p<N> на <хеш HEAD>`: the next item does not see someone else's half-work
   (in a wave copy the slot is held, 3a). An answer arrived — before the `executor` chain, restore them
   (`cp -r …/parked/p<N>/. .`, delete the folder), if `git diff --quiet <хеш>
-  HEAD -- <файлы>`; otherwise the path — for `executor-code`: move them by hand.
+  HEAD -- <файлы>`; otherwise the path — for `executor`: move them by hand.
 - **«Общий пробел»** — two items stumbled over one concrete thing (the same
   file, check, or document section), or two "failed" in a row («не удалось:
   код» — counts only if the file is the same): do not start similar ones; into `## Общий
@@ -355,8 +334,8 @@ such items — not needed. A wave with `[вид]` — also `studio-wave`
 ## 5. Rework after the owner's review
 
 The owner asks to rework an item, or disputed a «Решено за вас» in `/studio/done` — the cycle
-of section 3: a new `executor-code` with the item number and the owner's words verbatim
-(the review notes — as round 2–3: do not call prep and finish anew),
+of section 3: a new `executor` with the item number and the owner's words verbatim
+(the review notes — as round 2–3),
 `reviewer`, the commit `Пункт N: поправка — …` (one commit per item); a rework
 **of taste** for `[ui]` first goes to `designer` (section 3, step 2), for `[вид]` —
 a new choice per 3b, step 2 (his words outweigh the reference; he named a variant —

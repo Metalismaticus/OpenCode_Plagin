@@ -300,8 +300,8 @@ push (`git push`) if `AGENTS.md` says commits are pushed.
 ## 6. Disputed — into a fix
 
 How it should be — from the dialog's note; none — ask in words. The fix — by the
-`/studio/start` cycle "Fixes after the owner's check": a new `executor-code` with
-the owner's words verbatim (as rounds 2–3: do not call prep and finish again),
+`/studio/start` cycle "Fixes after the owner's check": a new `executor` with
+the owner's words verbatim (as rounds 2–3),
 `reviewer`, the commit `Пункт N: поправка — …`, the mark in `docs/BATCH.md`. The
 next `/studio/done` accepts it once the owner has looked.
 
