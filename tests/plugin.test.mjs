@@ -55,12 +55,21 @@ test('unavailable guard fails closed', async (t) => {
   const h = await host(t); fs.unlinkSync(path.join(h.root, '.opencode/studio/hooks/guard_git.py'))
   await assert.rejects(h.hooks.get('tool.execute.before')({ tool: 'shell', input: { command: 'git status' } }), /guard_git|No such file/)
 })
-test('context re-injects only a small continuation summary after compaction', async (t) => {
-  const h = await host(t); await h.call({ action: 'bind', mode: 'development' }); await h.call({ action: 'create', card: h.card })
+test('context re-injects only a small task line for a worker after compaction', async (t) => {
+  const h = await host(t); await h.call({ action: 'bind', mode: 'development' }); await h.call({ action: 'create', card: h.card }); await h.call({ action: 'begin', id: h.card.id }, coder)
   const event = { agent: 'executor', sessionID: coder.sessionID, system: [] }
   h.hooks.get('session.context')(event)
-  assert.match(event.system[0].text, /batch-p1/); assert.match(event.system[0].text, /ready/)
-  assert.ok(event.system[0].text.length < 2500)
+  assert.match(event.system[0].text, /batch-p1/); assert.match(event.system[0].text, /implementing/)
+  assert.ok(event.system[0].text.length < 600)
+})
+test('coordinator gets a compact development list; other chats pay nothing', async (t) => {
+  const h = await host(t); await h.call({ action: 'bind', mode: 'development' }); await h.call({ action: 'create', card: h.card })
+  const dev = { agent: 'studio', sessionID: owner.sessionID, system: [] }
+  h.hooks.get('session.context')(dev)
+  assert.match(dev.system[0].text, /batch-p1/); assert.ok(dev.system[0].text.length < 1200)
+  const other = { agent: 'studio', sessionID: 'ses-unbound', system: [] }
+  h.hooks.get('session.context')(other)
+  assert.equal(other.system.length, 0)
 })
 test('question answer is stored as user evidence; unrelated question does not grant acceptance', async (t) => {
   const h = await host(t); await h.call({ action: 'bind', mode: 'development' })

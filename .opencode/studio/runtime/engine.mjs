@@ -83,6 +83,16 @@ export class Engine {
   summary(state = this.store.read()) {
     return { revision: state.revision, tasks: Object.values(state.tasks).map((task) => ({ id: task.card.id, item: task.card.item, step: task.card.step, title: task.card.title, status: task.status, round: task.round, next: NEXT[task.status], worktree: task.worktree, limitations: task.report?.limitations ?? [] })) }
   }
+  // Compact projections for per-request context injection: keep the whole
+  // studio state out of every worker's token budget.
+  compactSummary(state = this.store.read()) {
+    const active = Object.values(state.tasks).filter((task) => !['accepted', 'rejected'].includes(task.status)).slice(-16)
+    return active.map((task) => [task.card.id, task.status, task.round])
+  }
+  workerSummary(sessionID, state = this.store.read()) {
+    const task = Object.values(state.tasks).findLast((item) => item.worker === sessionID && !['accepted', 'rejected'].includes(item.status))
+    return task ? { id: task.card.id, status: task.status, round: task.round } : null
+  }
   actorTask(state, actor, id) {
     const task = taskOf(state, id)
     if (actor.sessionID !== task.coordinator && actor.parentID !== task.coordinator) throw new Error('studio: task belongs to another session')

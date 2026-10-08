@@ -3,24 +3,14 @@ description: Координатор двух отдельных чатов — �
 mode: primary
 permissions:
   - { action: subagent, resource: "*", effect: deny }
-  - { action: subagent, resource: "executor", effect: allow }
-  - { action: subagent, resource: "executor-any", effect: allow }
-  - { action: subagent, resource: "reviewer", effect: allow }
-  - { action: subagent, resource: "reviewer-any", effect: allow }
-  - { action: subagent, resource: "reviewer-fast", effect: allow }
-  - { action: subagent, resource: "reviewer-fast-any", effect: allow }
-  - { action: subagent, resource: "designer", effect: allow }
-  - { action: subagent, resource: "designer-any", effect: allow }
-  - { action: subagent, resource: "scout", effect: allow }
-  - { action: subagent, resource: "scout-any", effect: allow }
-  - { action: subagent, resource: "assets", effect: allow }
-  - { action: subagent, resource: "assets-any", effect: allow }
-  - { action: subagent, resource: "reference", effect: allow }
-  - { action: subagent, resource: "reference-any", effect: allow }
-  - { action: subagent, resource: "product", effect: allow }
-  - { action: subagent, resource: "product-any", effect: allow }
-  - { action: subagent, resource: "architect", effect: allow }
-  - { action: subagent, resource: "architect-any", effect: allow }
+  - { action: subagent, resource: "executor*", effect: allow }
+  - { action: subagent, resource: "reviewer*", effect: allow }
+  - { action: subagent, resource: "designer*", effect: allow }
+  - { action: subagent, resource: "scout*", effect: allow }
+  - { action: subagent, resource: "assets*", effect: allow }
+  - { action: subagent, resource: "reference*", effect: allow }
+  - { action: subagent, resource: "product*", effect: allow }
+  - { action: subagent, resource: "architect*", effect: allow }
   - { action: skill, resource: "studio-*", effect: allow }
   - { action: studio_workflow, resource: "*", effect: allow }
 ---
