@@ -53,12 +53,29 @@ test('exactly three repair rounds; reviewer is fresh each round', async (t) => {
     if (round > 1) await r.call('begin', {}, { ...coder, sessionID: `ses-code-${round}` })
     const worker = round > 1 ? { ...coder, sessionID: `ses-code-${round}` } : coder
     await r.call('submit', { report: r.report }, worker)
-    if (round > 1) await assert.rejects(r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['Удар не работает'] }, reviewer), /fresh reviewer/)
-    const result = await r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['Удар не работает'] }, { ...reviewer, sessionID: round === 1 ? reviewer.sessionID : `ses-review-${round}` })
+    if (round > 1) await assert.rejects(r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['tree.js: удар не работает'] }, reviewer), /fresh reviewer/)
+    const result = await r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['tree.js: удар не работает'] }, { ...reviewer, sessionID: round === 1 ? reviewer.sessionID : `ses-review-${round}` })
     assert.equal(result.round, round)
     assert.equal(result.status, round === 3 ? 'failed' : 'changes_requested')
   }
   await assert.rejects(r.call('begin', {}, coder), /failed/)
+})
+test('a blocking review note must reference a file or path', async (t) => {
+  const r = repo(t); await r.start(); await r.submit()
+  await assert.rejects(r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['стало некрасиво'] }, reviewer), /file or path reference/)
+  await r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['tree.js: удар не работает — готово, когда прочность падает'] }, reviewer)
+  assert.equal(r.engine.store.read().tasks[r.card.id].status, 'changes_requested')
+})
+test('a green verify records the checkpoint automatically when HEAD qualifies', async (t) => {
+  const r = repo(t); await r.start(); await r.submit(); await r.approve()
+  r.git('add', 'tree.js'); r.git('commit', '-m', 'Пункт 1: дерево реагирует на удар')
+  const verdict = await r.call('verify')
+  assert.equal(verdict.passed, true)
+  const task = r.engine.store.read().tasks[r.card.id]
+  assert.equal(task.status, 'verified'); assert.equal(task.checkpoints.length, 1)
+  r.engine.observeOwner(owner.sessionID, 'принимаю всё')
+  await r.call('accept', { owner_quote: 'принимаю всё' })
+  assert.equal(r.engine.store.read().tasks[r.card.id].status, 'accepted')
 })
 test('disk changes after submit or review invalidate approvals', async (t) => {
   const r = repo(t); await r.start(); await r.submit()

@@ -190,6 +190,7 @@ export class Engine {
           task.reviewed_snapshot = task.submitted_snapshot; task.status = 'approved'
         } else {
           texts(input.notes, 'review notes', true)
+          for (const note of input.notes) if (!/[\w\-]+\.[A-Za-z0-9]{1,5}|\b\d+:\d+\b|\/[\w\-.]+/.test(note)) throw new Error('studio: every review note needs a file or path reference (rule · path:line · observed symptom · «готово, когда»); out-of-scope observations belong in the report, not blocking notes')
           task.status = task.round >= 3 ? 'failed' : 'changes_requested'
         }
         task.review = { verdict: input.verdict, spec: input.spec, quality: input.quality, criteria: input.criteria, notes: input.notes }
@@ -272,6 +273,17 @@ export class Engine {
       task.status = passed ? 'verified' : task.before_verify; delete task.verification_lease; delete task.verification_pid; delete task.before_verify
       task.verified_snapshot = passed ? current : null; record(task, 'verify-finish', actor, passed ? 'PASS' : 'FAIL')
       task.verified_project_snapshot = passed ? project : null; delete task.verifying_project_snapshot
+      // A green verify already proves the checked snapshot on this tree: record
+      // the checkpoint commit automatically when HEAD satisfies the contract,
+      // saving the coordinator one round trip; otherwise the manual path remains.
+      if (passed && !task.checkpoints.length) {
+        try {
+          const head = git(task.worktree, 'rev-parse', 'HEAD')
+          assertCheckpoint(task, head)
+          task.checkpoints.push(head)
+          record(task, 'auto-checkpoint', actor, head)
+        } catch {} // HEAD does not satisfy the checkpoint contract - checkpoint manually
+      }
       return { id: task.card.id, status: task.status, passed, limitation: task.card.verification_limit ?? null, results, next: NEXT[task.status] }
     })
   }
