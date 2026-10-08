@@ -1,5 +1,5 @@
 # Одна норма концов строк на всех платформах (Windows autocrlf не ломает скрипты)
-* text=auto
+* text=auto eol=lf
 *.png binary
 *.jpg binary
 *.webp binary
