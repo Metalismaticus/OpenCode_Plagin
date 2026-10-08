@@ -10,3 +10,6 @@ Desktop.ini
 # редакторы
 .vscode/
 .idea/
+
+__pycache__/
+*.pyc

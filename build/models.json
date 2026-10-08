@@ -1,21 +1,20 @@
 {
-  "$comment": "ЕДИНСТВЕННОЕ место роутинга СУБАГЕНТОВ студии. Роль → модель (id внутри провайдера). Смена модели/провайдера — правка этого файла + python build/configure.py. Координатор studio — без модели: выбор в чате (пикер), дефолт — глобальный конфиг OpenCode.",
+  "$comment": "Single source of subagent model routing. studio follows the chat picker. Full provider/model ids may override provider per role.",
   "provider": "opencode-go",
   "roles": {
-    "executor-prep": "glm-5.3-flash",
-    "executor-code": "glm-5.3",
-    "executor-finish": "glm-5.3-flash",
+    "executor": "glm-5.3-flash",
     "reviewer": "glm-5.3",
     "reviewer-fast": "glm-5.3-flash",
     "designer": "glm-5.3",
     "reference": "glm-5.3",
     "scout": "glm-5.3-flash",
-    "assets": "glm-5.3-flash"
+    "assets": "glm-5.3-flash",
+    "product": "glm-5.3",
+    "architect": "glm-5.3"
   },
   "$comment_roles": "studio (координатор) — НАМЕРЕННО без модели в файле: работает на модели, выбранной в пикере чата; без выбора — глобальный дефолт opencode-go/glm-5.3 (~/.config/opencode/opencode.json). Это рычаг владельца: например, переключить координатора на зрячую модель для разбора картинок. Субагенты — только здесь.",
   "rationale": {
-    "glm-5.3": "флагман: координатор, красное доказательство + реализация (exec-code), полная проверка, дизайн, разбор образцов",
-    "glm-5.3-flash": "дешёвая ступень ($0.15/$0.50 против $1.40/$4.40): разведка в бриф (prep), доведение (finish), лёгкая проверка (reviewer-fast), волны scout, ассеты"
-  },
-  "chain": "executor = executor-prep (бриф) -> executor-code (красное+реализация; круги 2-3 тоже он) -> executor-finish (проверки, снимки, полный итог)"
+    "glm-5.3": "complex design, architecture and full review",
+    "glm-5.3-flash": "implementation, reconnaissance, light review and asset mechanics"
+  }
 }

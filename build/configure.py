@@ -12,6 +12,7 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 AGENTS = os.path.normpath(os.path.join(HERE, "..", ".opencode", "agents"))
@@ -43,6 +44,32 @@ def generate_fallbacks(agents_dir, roles):
 def main():
     cfg = json.load(open(os.path.join(HERE, "models.json"), encoding="utf-8"))
     provider = cfg["provider"]
+    roles = json.load(open(os.path.join(HERE, "roles.json"), encoding="utf-8"))
+    if set(roles) != set(cfg['roles']):
+        raise SystemExit('roles.json and models.json must name exactly the same roles')
+    for role, settings in roles.items():
+        permissions = [
+            '  - { action: question, resource: "*", effect: deny }',
+            '  - { action: subagent, resource: "*", effect: deny }',
+            '  - { action: skill, resource: "studio-*", effect: allow }',
+        ]
+        if not settings['write']:
+            permissions.append('  - { action: edit, resource: "*", effect: deny }')
+        if not settings['shell']:
+            permissions.append('  - { action: shell, resource: "*", effect: deny }')
+        model = cfg['roles'][role]
+        model_id = model if '/' in model else f'{provider}/{model}'
+        text = ('---\n' + f"description: {settings['description']}\nmode: subagent\nmodel: {model_id}\nsteps: {settings['steps']}\npermissions:\n" + '\n'.join(permissions) + '\n---\n\n'
+                + f"You are {role}, responsible only for this role. Load `{settings['skill']}` before work.\n"
+                + 'Speak and report in Russian, in the owner\'s product vocabulary.\n'
+                + 'No chat history: use the task id and source paths supplied by the coordinator.\n'
+                + 'Load only skills/chapters required by the task, not the whole studio.\n'
+                + 'Owner words and recorded rejection reasons take precedence over your interpretation.\n'
+                + 'Choose technical implementation yourself; questions about taste, scope or acceptance\n'
+                + 'go into the «Вопрос владельцу» block for the coordinator. Never ask the owner\n'
+                + 'which class, node, shader or algorithm to use. Never accept your own result.\n'
+                + 'Do not commit, push, weaken tests or change process baselines.\n')
+        Path(AGENTS, role + '.md').write_text(text, encoding='utf-8')
     missing = []
     for role, model in cfg["roles"].items():
         path = os.path.join(AGENTS, role + ".md")
@@ -51,12 +78,13 @@ def main():
             continue
         with open(path, encoding="utf-8") as f:
             text = f.read()
-        new = re.sub(r"^model: .*$", f"model: {provider}/{model}",
+        model_id = model if '/' in model else f'{provider}/{model}'
+        new = re.sub(r"^model: .*$", f"model: {model_id}",
                      text, count=1, flags=re.M)
         if new != text:
             with open(path, "w", encoding="utf-8", newline="") as f:
                 f.write(new)
-        print(f"{role:12} -> {provider}/{model}")
+        print(f"{role:12} -> {model_id}")
     if missing:
         print("нет файлов агентов:", ", ".join(missing), file=sys.stderr)
         return 1

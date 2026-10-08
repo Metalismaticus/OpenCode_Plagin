@@ -1,0 +1,853 @@
+{
+  "repository": "Metalismaticus/CLAUDE_Game",
+  "commit": "ab79866b43b4bf1fb388826a77265f3a385a46ad",
+  "version": "0.10.6",
+  "protocols": {
+    "agents/assets.md": {
+      "sha256": "f65b18449d55eed152f0c6df883acf1ae4369294e643c9331326a310666bfbf1",
+      "body_sha256": "9d9547ab243eabf359429a8aa3632f60e59a4e829f31a9dc6958ad61310a31ef",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "1cd3b6a2d06e4ac794327119acda1ac72b228243c99d5d15192b8b39489962b6"
+        },
+        {
+          "file": "01.md",
+          "heading": "Порядок",
+          "sha256": "2452009d69aa4409a36f7b7983b1bc35965c2a6b412a18ce1f96e054c8af4121"
+        },
+        {
+          "file": "02.md",
+          "heading": "Нельзя",
+          "sha256": "8da7f424849daeaf5773663108f8d70256c4823ec58d089438d3997cd324e802"
+        },
+        {
+          "file": "03.md",
+          "heading": "Итог координатору",
+          "sha256": "20085dd5f2f21db8b50c6a8dc855f6c223b7c11cc86f63eb818edc1d6045a554"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/agents/assets"
+    },
+    "agents/designer.md": {
+      "sha256": "0968d95e699cd3be133d967bf1e974d2346783e44460c629b109041c6f757e4d",
+      "body_sha256": "5528e59ed25b07263bef1eae3e85437276eb328cab0a98c5397d1c9511504acf",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "8b913db60f2a39a02af278fdd328a1816f6bc2d1e63e6787e977f2d36415a5d2"
+        },
+        {
+          "file": "01.md",
+          "heading": "Вход",
+          "sha256": "f2180bfbb43e2173ad29b1fa41324939257e497508e6e9026c0e4b03fd9263d1"
+        },
+        {
+          "file": "02.md",
+          "heading": "Порядок",
+          "sha256": "b4cc4b09a09a3fbdf67647824c667e870ccd23472e038e3ebe9616d36ac65ed3"
+        },
+        {
+          "file": "03.md",
+          "heading": "Нельзя",
+          "sha256": "532b196d472d9bb61906728a801a96ecce1cdb5e7e4f2655691fd1448dddd71b"
+        },
+        {
+          "file": "04.md",
+          "heading": "Итог координатору",
+          "sha256": "973763c291d002e3fec46ec1bc6732477a7895144b4076616b8b11a24f1ab5ce"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/agents/designer"
+    },
+    "agents/executor.md": {
+      "sha256": "51dff038448627d844ecd5bd51c901123d9b999b2018288890ca9b2f1d6a8881",
+      "body_sha256": "ec5feeb74786b9dcd6c11f8a070e6d0dfebe3a95af55d2616742ff9ea5ca4a8d",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "9fa0612d359a2dedc8af40af77d7d30458b8d9d6f7184fa1b64a87ef96cdc0ff"
+        },
+        {
+          "file": "01.md",
+          "heading": "Вход",
+          "sha256": "b2b2e32389db155adfab8f27d68ad3c014cdf9dc0ae1642e3f5ec1051ea6ec08"
+        },
+        {
+          "file": "02.md",
+          "heading": "Порядок",
+          "sha256": "098ee82a823d53010c4afd785c9c1e6058e8600768fc92ff710e54b826356fcb"
+        },
+        {
+          "file": "03.md",
+          "heading": "Смотреть глазами (`[вид]`, `[ui]`)",
+          "sha256": "5ac30d675f828b001255fd26a75affe7a63fdceaa29bdc816330fe502188e4f2"
+        },
+        {
+          "file": "04.md",
+          "heading": "Пункт `[вид]` и `[ощущение]`",
+          "sha256": "aaa66b43c2537159106b6cc030d1a3a9ba9bde306ac2a4dbd31ffcef97396a3c"
+        },
+        {
+          "file": "05.md",
+          "heading": "Нельзя",
+          "sha256": "89f6ef9c61286b7377c5efdb292dbb75e4a08a57856d94f229a2088e7f43b533"
+        },
+        {
+          "file": "06.md",
+          "heading": "Итог координатору",
+          "sha256": "4fb0c057c8e2835b0785386679aed7acbefb8c00aa5d7bb62b8797eede0e1129"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/agents/executor"
+    },
+    "agents/reference.md": {
+      "sha256": "c0eca80be859bf45f6bfcec6a2b7a0484f87e515be6549ce69b9cbf1824aabf8",
+      "body_sha256": "f0f9dc39fa6e05e3a22901fce8f774b6c9c12a6ec4b7198e13d91fbca569b372",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "b6ec3844da8a236c266e34c15cc59391724b8870b70e853748c2b0676534144d"
+        },
+        {
+          "file": "01.md",
+          "heading": "Вход",
+          "sha256": "2af6312c5c8a0fbeaa4ba18087f8c5af531be5e9b225fc787f47258414380b73"
+        },
+        {
+          "file": "02.md",
+          "heading": "Порядок",
+          "sha256": "e0c2abb40bcc68d580e3837e701b18adb7c5c06d904fe5a3a0a9d9eb37f797dc"
+        },
+        {
+          "file": "03.md",
+          "heading": "Протокол взгляда",
+          "sha256": "cc9d87ad5cff864dae0dc234751849d90bf2a967850596a7740b28a10024cf02"
+        },
+        {
+          "file": "04.md",
+          "heading": "Вид работы `ощущение`",
+          "sha256": "0a2e279ee15eaecc950c517430f87b09b13b7107d1d3ccc91c5590b59c45529e"
+        },
+        {
+          "file": "05.md",
+          "heading": "Концепт: приём",
+          "sha256": "04a2d45a6394bcb8bcc7c27184b1dead36bb98236e02be54ea94209a656652bb"
+        },
+        {
+          "file": "06.md",
+          "heading": "Нельзя",
+          "sha256": "8e9c1739fc5f5ef45ca6d22cf744b35c66a963ad0aff37ba8a759a84a0273024"
+        },
+        {
+          "file": "07.md",
+          "heading": "Итог",
+          "sha256": "8a1c11826eebd01a42aaf791503586664195235338663195d15e0c718e98acdc"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/agents/reference"
+    },
+    "agents/reviewer.md": {
+      "sha256": "3c91d1fbc7c7a12849fb0258d279194a35e492ec4f7b2b15e335387370555a0e",
+      "body_sha256": "2d18cfb5baf932702fc06d2d67b54affc01ea8f0d9ab560e088a3a3480275cc9",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "ad73a91d010e9d402733387549d9cd3db352245e6a5f6d8eff085d23280212f8"
+        },
+        {
+          "file": "01.md",
+          "heading": "Вход",
+          "sha256": "0865c3c9e0c1ffe332dbe9cd25b87e2be6275f1d598f9023a3f80ad677a8fc7a"
+        },
+        {
+          "file": "02.md",
+          "heading": "Порядок",
+          "sha256": "4b3230b0dd18670dd92ebf765699eb4a8997a35365fb877acf890f1d8fcde8a1"
+        },
+        {
+          "file": "03.md",
+          "heading": "Режим `[вид]`",
+          "sha256": "8a78254c021e4ceb51e7d2505c424aa8261a26c5ec121b01d094deeba1ca7fd4"
+        },
+        {
+          "file": "04.md",
+          "heading": "Режим `[ощущение]`",
+          "sha256": "5946f5bd7bfe58a277f0272cdfcdba59852cca2c3f00fde111609f257e36c3c9"
+        },
+        {
+          "file": "05.md",
+          "heading": "Круг 2–3 — узкая повторная проверка",
+          "sha256": "9c6996c16fc2824ad5e6c6ac9d6e8f19d10c28eed288de89624b0a55020d2dca"
+        },
+        {
+          "file": "06.md",
+          "heading": "Нельзя",
+          "sha256": "02d6ebf40f1d79e24ef0a32b12a3f7683c8542087de40827ecda44fcb6405a2a"
+        },
+        {
+          "file": "07.md",
+          "heading": "Итог координатору",
+          "sha256": "f0b73730a0f5621ec52fabbe0f33e9cbb162312f700c17c0a7c5345259f74e0c"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/agents/reviewer"
+    },
+    "agents/scout.md": {
+      "sha256": "3c33da4296a9e7466ee408f9fed2786e94c2d98f93df0c8d23bb5dd83fe0f370",
+      "body_sha256": "1123b084b981a15ba672e75e52f1f3932b1603a747dd08abd120f2456f9ace57",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "a2343393a8bef112d4a3f2b37b95000ec0b702a2758c4981c0e489432be048ff"
+        },
+        {
+          "file": "01.md",
+          "heading": "Вход",
+          "sha256": "61fd655d235d5be9d1671e92e79b8cd6b1fe64ceac1fdbe3be87cf26ab719834"
+        },
+        {
+          "file": "02.md",
+          "heading": "Порядок",
+          "sha256": "258b027bd4a2d28e6bea26f0cb43f21c9300b15673ce23f9361095bb7dee131b"
+        },
+        {
+          "file": "03.md",
+          "heading": "Правило волны",
+          "sha256": "e03308e2d0199487e07a647fce50a8f8bd1f64b262c2a5a51cb4c57cb6f17de4"
+        },
+        {
+          "file": "04.md",
+          "heading": "Нельзя",
+          "sha256": "04a1a6eb55b176fa686fbc7176dba0552e0f2f5981a0ac2c08cc2484b5c72766"
+        },
+        {
+          "file": "05.md",
+          "heading": "Итог координатору",
+          "sha256": "6ae0d9e4d3c0163f95d9411d1fc86b3513f7c1d1d39256ffc6d3564eeb84a89a"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/agents/scout"
+    },
+    "skills/add/SKILL.md": {
+      "sha256": "504499ed8a40e90ea8297c3fa3a5595c4cb20c4a6240a51cb56bdaa0f7b5585f",
+      "body_sha256": "f037fa673a7139c43c1ad5ff9febc6f1d7169bae9cab9da0b491a5f1c566b9f3",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "2e44ade66b5a2b2187013bd6c893dd551347755c473c06b3cf8d031bb440134e"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Собрать ожидаемые назначения",
+          "sha256": "06bf3474aa28b2106d4bb8867ab0e4b35cc1ae2a1abc19e7aa9f8de45a002343"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Копировать безопасно",
+          "sha256": "1e581085d654f1d77f7abce9f7783899e9c215fdce2a03608d1f073589294c53"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Проверить: сначала скрипт, потом глаз",
+          "sha256": "7d10e10e4fabe61e2b90c1903ae866f49d12ab342c6d21fd04fe6cfbb3eee49d"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Передать состояние чату замысла",
+          "sha256": "699886db133efd881c3f117df638d8754a1a4cb62560250d2df5c15ad41fce77"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. Зафиксировать и выдать",
+          "sha256": "2c437650d80c11e781b9ac43db693c4e416b7ca36cb48d8944e70b09434593f9"
+        },
+        {
+          "file": "06.md",
+          "heading": "6. `design` — макеты из Claude Design",
+          "sha256": "14f6aecafb93ef46948e4d8c1b63b5437ae6916b362ae0263ad9f57993d0400a"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/add"
+    },
+    "skills/art/SKILL.md": {
+      "sha256": "4ab973ddf8dcd3a3a898f0f4cf33ee0188bfe6c9ec0c805f1cfce4c578e6f638",
+      "body_sha256": "68cd08efdbae52a27354ce990f3e1fb4ad2d3a8958d0a7bdcb03ce5a972453eb",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "68cd08efdbae52a27354ce990f3e1fb4ad2d3a8958d0a7bdcb03ce5a972453eb"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/art"
+    },
+    "skills/board/SKILL.md": {
+      "sha256": "665cc93f19882a29aef4f48365fab5348ad9da405b57ba716a3e8559b587146d",
+      "body_sha256": "57a73936992364ff292205808ba9e807ab9c0829ce4ef07d2dbd8cf1a53ca3a7",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "57a73936992364ff292205808ba9e807ab9c0829ce4ef07d2dbd8cf1a53ca3a7"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/board"
+    },
+    "skills/check/SKILL.md": {
+      "sha256": "8ce034d9cbc5cafaf9bd27b2ee97e9ef9c8e40b823a858ae980a86ab5dd967d8",
+      "body_sha256": "7ed009bbcd10b6ade7bacd5d952370202c7e146e508d3a8560a392cf4776f871",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "02a93753e1310a49c9c0286837fe69ea1492b55f782162e5dbeb43290ca3d32b"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Прогнать",
+          "sha256": "28c6b911434e78d7108630001f30983df774f166d21838753097426efd157581"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Разобрать провалы",
+          "sha256": "f674bb7083c290205b16402d67abb5a1b90efae779d86be3ce7be33bda3cf9a4"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Что делать с найденным",
+          "sha256": "d639523a98cd948aaa38b7e9c2acdeeae72af4f3b83a0bed061a3a1f695fda30"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Красное бывает правильным",
+          "sha256": "50ce653b118cd228943284ebf0d496e07652a9fc44bc23f71475ba1c49dcea6f"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. Чего проверки не видят",
+          "sha256": "a1d28f2efdadad51c7f444a00876bc819ff70c7f0d07c0fb340237ee5fab3f7c"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/check"
+    },
+    "skills/done/SKILL.md": {
+      "sha256": "b7a63b89c15f5f756e01173f2649ebbaa5e5e864c52382041957e4c855d9afbf",
+      "body_sha256": "c752af40ec97ea4f2d3af75388cdae37e8fe08c99a8bb0629f2556c34bcfaec4",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "fab9cf635b7dce1a52673a9b2d997ab4b257c86a4c13ee885f90673371d0a80c"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Собрать партию",
+          "sha256": "d19be4f52a6cb67d7d11401df528f16b139f38df420176966771d36785f32934"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Спросить",
+          "sha256": "be80bd79a18444c81170b7ef4081ad034bc3872795a904478791f92c18c5124e"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Откатить непринятое",
+          "sha256": "860a7ee97f0280f828001d9c8941bad56486ac6086b0f394c540dfd3bbdffe91"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Финальная проверка",
+          "sha256": "c839242c1dbeeba60fca6dc21ba393c39c7130924819ef6937e296a33cad1b33"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. Документы и отправка",
+          "sha256": "ed2de29159ddc0aa30f62cccf4fa6a3ebd6eb505159e387b8f5930e58720668a"
+        },
+        {
+          "file": "06.md",
+          "heading": "6. Оспоренное — в поправку",
+          "sha256": "59a83b4ecd50e281ad38175320afff81d3ecb64e09eb74c2f411c3e3209ef021"
+        },
+        {
+          "file": "07.md",
+          "heading": "7. Отчёт",
+          "sha256": "3dadfaf0fdb3becdc14fd8c778a331eeeda5caa689816262014158d967cf7981"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/done"
+    },
+    "skills/fault/SKILL.md": {
+      "sha256": "f140d0bbcf725f77b30b171f99f75ff13a76922946bca46c229613146fd80079",
+      "body_sha256": "ea712aaa020274870288c57ce8ee056656af598e12736467ed92b35f3eebfb3c",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "add9f6b3f82eb6560a7f65274a94232aedfdde77161ded535fbed6d18f9a0fd2"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Прочитать, а не вспомнить",
+          "sha256": "2ab6293ba8f93eb133784f025b8efb2175fe45c7bda0611e12ccfac58fef3ced"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Спросить, как часто и где",
+          "sha256": "4d7cfb0663b27c5579b00f61eb0fffefeeb19976f96ab890b35ac41650b73a53"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Отделить баг от прочего",
+          "sha256": "3cc58cd29fa860f439a2f49df1286dbcfbd6fbecf8ecf4ec8cf277a470b3fabf"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Найти причину по коду и честно пометить уверенность",
+          "sha256": "14466edf05ec5c38e20efed2ca408e4d23986c64398bf741fcf864ce33c6920c"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. Записать",
+          "sha256": "bd9d1c9d85b0f0580d4daa5f56575f48b84c77efec6c24625e187c18e509c590"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/fault"
+    },
+    "skills/idea/SKILL.md": {
+      "sha256": "3bf01686b43733cda2d8a28bae3c5e0813ec1055ebdb3182afa86ce94d3dc5d3",
+      "body_sha256": "79be150c42dadb6b8c26e42603e1b939c76d2b79a66e0c21116c2487bc37ecad",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "f215708484a6c3f705c82baf22d449ca7066d76b7628b198951388beefa8c4c9"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Разобрать вход",
+          "sha256": "4d048a4b998da317a810706254b1b5de0e5868070c913e7a91bc0bd4c4457d9e"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Прочитать нужное, а не всё подряд",
+          "sha256": "de364b14953cc51071c0a40d86482cbfca038267c50d44b3d72ffc69dfa41d17"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Образец: разобрать до вопросов",
+          "sha256": "eb7f527dfd988bad4440b96cc3dc8cca980f5a81bdbcb7a0dd90db9b0cb7ddc2"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Сверить с записанным и кодом",
+          "sha256": "3a379aff8cb1b446a4a10646f322314c3a0abe7731e3d5edc3953284f91aff8f"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. Назвать цену",
+          "sha256": "fb74b89bc9bbe3f0e025971cb1344e9c7c0a4586c2292d17a371413b64530cd7"
+        },
+        {
+          "file": "06.md",
+          "heading": "6. Показать разбор и спросить",
+          "sha256": "221c51cec0fb5af549bdc55bed266528866d6591d8b397aeb06783328f63a651"
+        },
+        {
+          "file": "07.md",
+          "heading": "7. После ответа",
+          "sha256": "81dfca0707168341e5d66b7ab4ef4dcee4ca5a678dfc545752a92ef5955a7a1a"
+        },
+        {
+          "file": "08.md",
+          "heading": "8. Концепт стиля (вид всей игры)",
+          "sha256": "e96421c029d5f009a6b886ef41c31de68131f87af43a39eec8aa3903c4106e4b"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/idea"
+    },
+    "skills/mockup/SKILL.md": {
+      "sha256": "cb294fd8c1540d73e63fd7e676b61cb5b9f673fcd9b5b7f63345c899cae34710",
+      "body_sha256": "1a8e3530fe1f03f5d53dd29d838434849c87e9eeb725fe6154dbfcb510268c4f",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "1a8e3530fe1f03f5d53dd29d838434849c87e9eeb725fe6154dbfcb510268c4f"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/mockup"
+    },
+    "skills/music/SKILL.md": {
+      "sha256": "00d1a83e4abbaa6db41f7696ac63d0b73c773869a5ee853bfbc55479d353d1bd",
+      "body_sha256": "a56473d1c37dcadd8483bc639512b64a50140cff698af9c49c0e1956910ac685",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "a56473d1c37dcadd8483bc639512b64a50140cff698af9c49c0e1956910ac685"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/music"
+    },
+    "skills/need/SKILL.md": {
+      "sha256": "980075376a018b4e4de243a580b746f530334afcc2196b4fc9ec1374c9bbad4a",
+      "body_sha256": "4065607a9b720f0284c8b109cad87960edea3aed107e926db25a77cc503c5151",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "dc5d0ce556382490ca679acd8d1a72b42840b4d6bfaf4bcd7ca8fd3992bc4a69"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Прочитать, а не вспомнить",
+          "sha256": "992f871c53405c9a23419614827688218f8678339c70ea5b714e52b60e6e8fe6"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Проверить, не пришло ли уже",
+          "sha256": "8ee4e59b3a65254c7ebabcbffd5bf770da45985223cf7f8ca7384c7e1c141041"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Заказы: выдать готовыми",
+          "sha256": "c0424e538ed0ca1cabff545572b8f319cb8cfb0a1793c7552290eacb49928c4c"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Решения и образцы: спросить окнами",
+          "sha256": "fa506715a0083ffa6860f9eef2ba384fde46aad703621fc5b1d95d47fa513862"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. В конце — счёт",
+          "sha256": "66f46cbe3ec2f96692a1dca4465cbcbb06d29ec8a465528d08bbe561c7aa3caa"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/need"
+    },
+    "skills/order/SKILL.md": {
+      "sha256": "28d294c8bb404d67ea2297d50220925bbff3ddfcdc52b6a6b3f6752842dd6bea",
+      "body_sha256": "fa53b3318ac6182095aab8227bab80eb30765bd465e93a0a1fa2753cd60220b4",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "f131612d2572e94e7cfb5975bf8ab16e82830e465b0d039d928602546def6f5d"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Сверить, что этого ещё нет",
+          "sha256": "c1e0442e3af74487a506b6b053e5acb2c140c0031247f3c601962dafa982e8b7"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Прочитать, а не вспомнить",
+          "sha256": "601a98cc5e75e2ffc52aed33824b378e9c8d0e4ca82b1b6309e4bcf7cd9d3776"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Собрать заказ",
+          "sha256": "1babf2f62f0d893da58b48b10d7decd40562f41c6266f675287dceff05f5bec4"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Записать в файл, а не только в чат",
+          "sha256": "5d73cc41bb504a7a3200fff04a914a1caf609cdca170b8ae8d38837ac90795c6"
+        },
+        {
+          "file": "05.md",
+          "heading": "5. Записать долг и журнал",
+          "sha256": "b7f6f883355c1171fbe886df9ab29182dd1a712b29a78f9cbf6f3f136151ae0a"
+        },
+        {
+          "file": "06.md",
+          "heading": "6. Отправить — по исполнителю из паспорта",
+          "sha256": "4e8772594122791b0b3c1ac98cdc49d01b3cee174048d408590c4eacfd620a3b"
+        },
+        {
+          "file": "07.md",
+          "heading": "7. Выдать",
+          "sha256": "2cc2cc057222368914a3cfcb7cfb4c5332227f93e800b3fe0ed13ad4782d9da3"
+        },
+        {
+          "file": "08.md",
+          "heading": "8. Сохранить",
+          "sha256": "88b38df33ef406196899ffd183708f0567eb7a4f03e5b27f9f4ae670b17ebe71"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/order"
+    },
+    "skills/parallel/SKILL.md": {
+      "sha256": "2da7b8afc76ac5f42b8a720c5af3b803382528caf6e4c020ad1da89c5d125122",
+      "body_sha256": "2e0ceb9dd633d4b87285ebeb2eca6bdbb82cfb105e3fb7e6479b45e86d41b804",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "cc2be6f0da34ffc115fbb828869460e5e306a40c1ab52e72cd383be04350c55c"
+        },
+        {
+          "file": "01.md",
+          "heading": "Без аргумента — показать",
+          "sha256": "d48a8cf573a0319ebf346db426cb021597e13b087f7615fe1d8033f97fa64af1"
+        },
+        {
+          "file": "02.md",
+          "heading": "`N` — сколько пишут",
+          "sha256": "f48789fce9a87db9cb8aa616a77694b4584306c69a759469c7bd6a167d7e8cc4"
+        },
+        {
+          "file": "03.md",
+          "heading": "`проверки M` — сколько тяжёлых проверок",
+          "sha256": "6bcd8c03a7d9c9e78298bbd626762d21c0ab99aaea914b4d5875141021b6c504"
+        },
+        {
+          "file": "04.md",
+          "heading": "`проверить` — пробный прогон",
+          "sha256": "66a9fe2ea45b0d1a1166f86257c3cd0b379d9ffd4873d276973d01e1b5f274ae"
+        },
+        {
+          "file": "05.md",
+          "heading": "Сохранить",
+          "sha256": "e22724abd2bb156babc07760e97db5cb8b78a2c8c9952733ae8c7377dfa60ae6"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/parallel"
+    },
+    "skills/release/SKILL.md": {
+      "sha256": "cfca2655fb6e58b06c225131784bfa797b26b0713f3ad0284f29dc44476ede32",
+      "body_sha256": "2f1922a237be95423021de6059cf7602cc533d9ef35edbce6f80693aecac182f",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "12af5813a6e2d5be9bf3cce6c5417dbe0286ccf287dee57b7c85452b02d1d020"
+        },
+        {
+          "file": "01.md",
+          "heading": "Главное",
+          "sha256": "d82b256d393f6dddcd3751baf1711efb4d1be63c32551d42a62cf6865995cd11"
+        },
+        {
+          "file": "02.md",
+          "heading": "1. Условия",
+          "sha256": "df559b78a808d29bef84c138d53ed9c99187e54727d6d7c619ef18fc02066348"
+        },
+        {
+          "file": "03.md",
+          "heading": "2. Сборка",
+          "sha256": "47d88d8a495450d57970d59fda7fc80e698e29657c1c4480932add632024d60c"
+        },
+        {
+          "file": "04.md",
+          "heading": "3. Проверка сборки",
+          "sha256": "39f2f26e8cebcc67a363e4a3aca3ad09f9aec1dcf946eb28e1cafcf3ee087af5"
+        },
+        {
+          "file": "05.md",
+          "heading": "4. Версия и тег",
+          "sha256": "5b9ac9ce43bbb8a9b653376ae70434c1bae402be05ce8dfbb287b89efbcb38bf"
+        },
+        {
+          "file": "06.md",
+          "heading": "5. Заметки к версии",
+          "sha256": "a86bacd080f54b6f1100c1fd540468cb8dfc6e0363db26c6dd237bc36696fc3c"
+        },
+        {
+          "file": "07.md",
+          "heading": "Новое",
+          "sha256": "80e5fa86e4d41b1873dc057c787de204948efed7c5ae1c05c60024b4ec30bc8c"
+        },
+        {
+          "file": "08.md",
+          "heading": "Исправлено",
+          "sha256": "796f76663f045be4a48ae94beaa8d574ae896ac78da5a18e617978d7b714c445"
+        },
+        {
+          "file": "09.md",
+          "heading": "Снимки",
+          "sha256": "028fbe8587e8694da6e7e0f25b1d1e9f498e29abda7a65c61154eb62c503fe00"
+        },
+        {
+          "file": "10.md",
+          "heading": "6. Права, титры, раскрытие ИИ",
+          "sha256": "d62f24ae9b4d27264c10d3388e5efa7d2610984b7264345391652cb16c9b4cfb"
+        },
+        {
+          "file": "11.md",
+          "heading": "7. Выкладка",
+          "sha256": "2f0f4d2ae86040f5a54faad47e885e377252cbdd1902e5baf6dee838ff48e2cc"
+        },
+        {
+          "file": "12.md",
+          "heading": "8. Запись и отчёт",
+          "sha256": "f7bb07166a7fe703ae7f6ff552d915ee090d2cc0ece986e1f11bf2ba61998b60"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/release"
+    },
+    "skills/retro/SKILL.md": {
+      "sha256": "a95805403e4ebc4e2c6788cccd711d51bd66b1d911d517a2166b98b76ea85dcb",
+      "body_sha256": "dffe67e9c1a8313b107c5d4668c73847c81aea92d4c5e570fd25a52afccaeb7f",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "2bed548f1ad6c78d499cd36a7775f2a059d22a39ba942daa4ddecc1a89281cb3"
+        },
+        {
+          "file": "01.md",
+          "heading": "1. Собрать факты",
+          "sha256": "df9771c2ed351f01094daf7562e6604b82136a0bfe3fe48acbd3b2da7ed75540"
+        },
+        {
+          "file": "02.md",
+          "heading": "2. Найти повторяющееся",
+          "sha256": "bfd489bc4495c25d81fd0f2ad2d897255354afea8dc5d2ac92f685d9cfa69835"
+        },
+        {
+          "file": "03.md",
+          "heading": "3. Развести уроки по адресам",
+          "sha256": "fc8620f3d845120843d6f248edf43e226862a916d0ff5bf8d795b4c44f4de8e3"
+        },
+        {
+          "file": "04.md",
+          "heading": "4. Показать и принять",
+          "sha256": "aa2d136d67d51bb30525c3c9007a1b0b6656af04d6e15b6709344c1a92c82d92"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/retro"
+    },
+    "skills/roadmap/SKILL.md": {
+      "sha256": "5a1268b451b7cc452285b498329f0f3e66ff60b6b6058fe29cee1d35c5ae7f35",
+      "body_sha256": "ebeb7486268342412d4e360e2787ac066ea054b04c2017c2ef6edaa387e66c81",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "1e4f3015f3669e33de67916a91bd6520a451feead736fc3b20f4abfa40ecb0de"
+        },
+        {
+          "file": "01.md",
+          "heading": "Сборка (без режима)",
+          "sha256": "164bb2f956c3881f3805ad60d120b69130de80e5d63c00d18fe57cb2db102a52"
+        },
+        {
+          "file": "02.md",
+          "heading": "`следующий`",
+          "sha256": "c03ecf9aa7d448581963b9336ae80cef8dc91cf23b28322b4f7f944c9ffbe58f"
+        },
+        {
+          "file": "03.md",
+          "heading": "`пересмотр`",
+          "sha256": "975ae345bd1d5e9f185b1a6b7b0265ee3ab57c0f0fa0c26a807cc8e61cef3b5b"
+        },
+        {
+          "file": "04.md",
+          "heading": "`прогноз`",
+          "sha256": "73810c9dcfa2c641a3419a970fafab73b1f3b142e752e338bc6aa4948b117db9"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/roadmap"
+    },
+    "skills/setup/SKILL.md": {
+      "sha256": "f51ad3b9f14df47e3a82601df2e65114cdad31c9abba86f762052e76db7f7951",
+      "body_sha256": "20edf9eddc83c786544af40e2c1da1964e5621abd53b1cb48a334adb857c561a",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "b6b2a0753e32640e799f1f2120b42cf39fe46bc2ac512606f2e335b9ed5c5681"
+        },
+        {
+          "file": "01.md",
+          "heading": "Главное",
+          "sha256": "bf5ec6bf18399856eab3831b67399d3e2a0da8082be95c6c66ff42e673d20df5"
+        },
+        {
+          "file": "02.md",
+          "heading": "0. Где мы",
+          "sha256": "21cf081f4df6a8add6d4d5b0228b37c6586f9ead09c070891a4cf52792f383a3"
+        },
+        {
+          "file": "03.md",
+          "heading": "Шаги",
+          "sha256": "2f25fad44d4d0d2d970e5c845ef1362672395aba5b366504467b059df426a732"
+        },
+        {
+          "file": "04.md",
+          "heading": "12. Коммит, страж, отчёт",
+          "sha256": "f4c63c11c113e89ac4c879dedf3a81b99df36def1180dd93ba7cbb22b6fef649"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/setup"
+    },
+    "skills/start/SKILL.md": {
+      "sha256": "b9eda225bca3fd5d7fd28e6bca538f3cb8330c2b7480801f535b03996066ba3f",
+      "body_sha256": "0b61953dc59cac3b76d9d3ea704e48dc2a19fff26f3b4d3fc7f8a2d7b7308110",
+      "chapters": [
+        {
+          "file": "00.md",
+          "heading": "Вводные правила",
+          "sha256": "dcf55cca52414a792bdbdbcf87d09a4508eba72898dee642c800c3066e9b3196"
+        },
+        {
+          "file": "01.md",
+          "heading": "Главное",
+          "sha256": "ddefd299386da5dd46a857f09e87f3e823c1a53ea2a7fff501620f96bc05fb9c"
+        },
+        {
+          "file": "02.md",
+          "heading": "1. Подготовить основу",
+          "sha256": "73dd09911d0076fd288a6f8b7ee58c6a39e3e35e27ccaeb214e11e4e00203a75"
+        },
+        {
+          "file": "03.md",
+          "heading": "2. Зафиксировать объём",
+          "sha256": "9fe86354aada39eac0c33edc2836ce30b94d0c3a26d1e6b226e1647a23e9ec0f"
+        },
+        {
+          "file": "04.md",
+          "heading": "3. Выполнить один пункт",
+          "sha256": "8ed0eb1b26858a5204d58889d9be51dce6df1f4d25201edbf16716abcc998bcc"
+        },
+        {
+          "file": "05.md",
+          "heading": "3а. Волна: пункты одновременно",
+          "sha256": "25f3d960cc9d18520a8cc2793ee8aef3b5c0bd559801bca4e2a548172d305c11"
+        },
+        {
+          "file": "06.md",
+          "heading": "3б. Пункт `[вид]` и `[ощущение]`: варианты и выбор",
+          "sha256": "fce06794ea32e82f5c68c7db1e70956a5438b176db24dafd876b2523dfc4a6dc"
+        },
+        {
+          "file": "07.md",
+          "heading": "4. Ошибка, вопрос, общий пробел",
+          "sha256": "4dc37c05c72583eda720d06556ea785e25fd5990b30ca104dc19d768e7976453"
+        },
+        {
+          "file": "08.md",
+          "heading": "5. Поправки после проверки владельца",
+          "sha256": "de5ad2b67483ff01d0eeb4cc8d7b20763f8b5e7529e0bb6554b466a693b8d7bf"
+        },
+        {
+          "file": "09.md",
+          "heading": "6. Завершить запуск",
+          "sha256": "d19116a0d162a35fd050b7cd22ad76a0a9065fc18ed7ec70f4afd4248bb731d8"
+        }
+      ],
+      "destination": ".opencode/studio/protocols/commands/start"
+    }
+  }
+}

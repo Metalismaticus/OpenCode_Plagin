@@ -1,0 +1,11 @@
+{
+  "executor": {"description": "Исполнитель одной карточки задачи; код, проверки и доказательства результата.", "skill": "studio-implement", "steps": 150, "write": true, "shell": true},
+  "reviewer": {"description": "Независимая полная проверка требований, кода и результата; без правки продукта.", "skill": "studio-review", "steps": 100, "write": false, "shell": true},
+  "reviewer-fast": {"description": "Независимая проверка малого пункта; полный прогон выполняется в конце партии.", "skill": "studio-review", "steps": 80, "write": false, "shell": true},
+  "designer": {"description": "Спецификация интерфейса на языке игрока; не пишет код.", "skill": "studio-ui", "steps": 60, "write": true, "shell": false},
+  "scout": {"description": "Читает код: карта затронутых систем, факты, риски и независимые волны.", "skill": "studio-scout", "steps": 50, "write": false, "shell": false},
+  "assets": {"description": "Принимает и проверяет заказанные ассеты по исходному протоколу.", "skill": "studio-assets", "steps": 80, "write": true, "shell": true},
+  "reference": {"description": "Исследует образец: картинки, приёмы, паспорт темы и границы уверенности.", "skill": "studio-reference", "steps": 100, "write": true, "shell": true},
+  "product": {"description": "Помогает додумать идею: ощущения, правила и критерии на языке игрока; не пишет код.", "skill": "studio-product", "steps": 50, "write": false, "shell": false},
+  "architect": {"description": "Переводит замысел в техническую карточку по существующему коду; не реализует.", "skill": "studio-architecture", "steps": 70, "write": false, "shell": false}
+}
