@@ -9,6 +9,17 @@ export const coder = { sessionID: 'ses-code', agent: 'executor', parentID: owner
 export const reviewer = { sessionID: 'ses-review', agent: 'reviewer', parentID: owner.sessionID }
 export const words = 'Дерево должно реагировать на удар'
 
+// fs.cpSync fails on Windows when the destination path contains non-ASCII
+// characters (Node 22.19); copy by hand so the Cyrillic fixture keeps working.
+export function copyTree(from, to) {
+  fs.mkdirSync(to, { recursive: true })
+  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+    const source = path.join(from, entry.name), target = path.join(to, entry.name)
+    if (entry.isDirectory()) copyTree(source, target)
+    else fs.copyFileSync(source, target)
+  }
+}
+
 export function repo(test, options = {}) {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'studio-test-'))
   test.after(() => fs.rmSync(temporary, { recursive: true, force: true }))
@@ -19,6 +30,10 @@ export function repo(test, options = {}) {
   fs.writeFileSync(path.join(root, 'other.js'), 'export const untouched = true\n')
   const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
   git('init', '-b', 'main'); git('config', 'user.name', 'Studio Test'); git('config', 'user.email', 'test@example.invalid')
+  // Deterministic eol on every platform: with core.autocrlf=true (a common
+  // Windows global) a merged checkout gets CRLF while the slot keeps LF and
+  // content digests of the same file diverge.
+  git('config', 'core.autocrlf', 'false')
   git('add', 'docs/BATCH.md', 'tree.js', 'other.js'); git('commit', '-m', 'Initial game')
   const engine = new Engine(root, options)
   const card = { id: 'batch-p1', batch: '2026-10-07', item: 1, step: 'implementation', kind: 'code', title: 'Реакция дерева', owner_words: words, goal: 'Понятная реакция', player_result: 'Прочность уменьшается', acceptance: ['Удар уменьшает прочность'], invariants: ['Остальные деревья целы'], out_of_scope: ['Падение'], sources: ['docs/BATCH.md'], references: [], skills: [], depends_on: [], files: ['tree.js'], checks: [{ name: 'parse', command: `"${process.execPath}" --check tree.js`, timeout_ms: 5000 }], how_to_see: 'Ударьте по дереву у спавна' }

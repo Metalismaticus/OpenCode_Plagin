@@ -5,12 +5,12 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import plugin from '../.opencode/plugins/studio.ts'
 import { runPython } from '../.opencode/studio/runtime/python.mjs'
-import { repo, owner, coder, reviewer } from './helpers.mjs'
+import { repo, owner, coder, reviewer, copyTree } from './helpers.mjs'
 
 const project = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 async function host(t) {
   const r = repo(t)
-  fs.cpSync(path.join(project, '.opencode'), path.join(r.root, '.opencode'), { recursive: true })
+  copyTree(path.join(project, '.opencode'), path.join(r.root, '.opencode'))
   // Plugin files are installed configuration, not uncommitted product code.
   r.git('add', '.opencode'); r.git('commit', '-m', 'Install studio')
   const hooks = new Map(), tools = new Map(), storage = new Map()
