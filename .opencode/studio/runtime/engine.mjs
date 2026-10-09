@@ -3,7 +3,7 @@ import path from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { Store, stateDirectory } from './store.mjs'
 import { taskCard, reportContract, requireText, texts, baseRole, isStudioRole } from './contracts.mjs'
-import { git, baseline, snapshot, fileDigest, assertScope, assertCheckpoint, sameProject, projectSnapshot } from './git.mjs'
+import { git, baseline, snapshot, fileDigest, assertScope, assertCheckpoint, sameProject, projectSnapshot, worktreeInfo } from './git.mjs'
 import { runChecks } from './checks.mjs'
 
 const NEXT = {
@@ -15,6 +15,15 @@ const NEXT = {
   accepted: 'update documents per /studio/done', rejected: 'revert item commits per /studio/done',
 }
 function at() { return new Date().toISOString() }
+function dirSize(directory) {
+  let total = 0
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const child = path.join(directory, entry.name)
+    if (entry.isDirectory()) total += dirSize(child)
+    else { try { total += fs.statSync(child).size } catch {} }
+  }
+  return total
+}
 function taskOf(state, id) {
   const task = state.tasks[id]
   if (!task) throw new Error(`studio: unknown task: ${id}`)
@@ -37,6 +46,7 @@ function worker(actor, task, roles) {
 }
 function record(task, action, actor, detail = '') {
   task.history.push({ at: at(), action, session: actor.sessionID, agent: actor.agent, detail })
+  task.history = task.history.slice(-40)
 }
 function dependencies(state, task, accepted = false) {
   for (const id of task.card.depends_on) {
@@ -108,6 +118,7 @@ export class Engine {
     }
     if (input.action === 'verify') return this.verify(input, actor, signal)
     return this.store.transaction((state) => {
+      const extra = {}
       if (input.action === 'bind') {
         if (baseRole(actor.agent) !== 'studio' || actor.parentID) throw new Error('studio: only primary studio can bind a chat')
         if (!['concept', 'development'].includes(input.mode)) throw new Error('studio: concept or development mode required')
@@ -142,6 +153,37 @@ export class Engine {
         state.tasks[card.id] = task; record(task, 'create', actor)
         if (sameStep) sameStep.superseded_by = card.id
         return { id: card.id, status: task.status, next: NEXT[task.status] }
+      }
+      if (input.action === 'tidy') {
+        coordinator(actor, state)
+        const canonical = (p) => { try { return fs.realpathSync.native(p) } catch { return null } }
+        const rootCanon = canonical(this.root)
+        const worktrees = worktreeInfo(this.root).flatMap(({ path: wtPath, branch }) => {
+          const canon = canonical(wtPath)
+          if (!canon || canon === rootCanon) return []
+          const active = Object.values(state.tasks).some((item) => !item.archived && !['accepted', 'rejected'].includes(item.status) && item.worktree && canonical(item.worktree) === canon)
+          let dirty = null
+          if (fs.existsSync(wtPath)) { try { dirty = git(wtPath, 'status', '--porcelain').trim() !== '' } catch { dirty = null } }
+          return [{ path: wtPath, branch, active, dirty }]
+        })
+        const size = (p) => (fs.existsSync(p) ? dirSize(p) : 0)
+        return { worktrees, bytes: { state: size(this.store.directory), usage: size(path.join(path.dirname(this.store.directory), 'usage')), rounds: size(path.join(this.root, 'rounds')), 'docs/prompts': size(path.join(this.root, 'docs', 'prompts')) } }
+      }
+      if (input.action === 'close_batch') {
+        dev(actor, state)
+        requireText(input.batch, 'batch id')
+        const open = Object.values(state.tasks).filter((item) => !item.archived && item.card.batch === input.batch && !['accepted', 'rejected'].includes(item.status))
+        if (open.length) throw new Error(`studio: batch still has open tasks: ${open.map((item) => item.card.id).join(', ')}`)
+        const removed = [], kept = []
+        const rounds = path.join(this.root, 'rounds')
+        if (fs.existsSync(rounds)) {
+          for (const name of fs.readdirSync(rounds)) {
+            if (/^p\d+-стоп$/u.test(name)) { kept.push(name); continue }
+            fs.rmSync(path.join(rounds, name), { recursive: true, force: true })
+            removed.push(name)
+          }
+        }
+        return { batch: input.batch, rounds_removed: removed, rounds_kept: kept }
       }
       const task = input.action === 'adopt' ? taskOf(state, input.id) : this.actorTask(state, actor, input.id)
       if (input.action === 'adopt') {
@@ -215,6 +257,13 @@ export class Engine {
         if (input.action === 'reject') { requireText(input.reason, 'verbatim rejection reason'); this.evidence(state, actor, input.reason) }
         task.owner_decision = { quote: input.owner_quote, reason: input.reason ?? '', evidence_id: proof.id, source: proof.source }
         task.status = input.action === 'accept' ? 'accepted' : 'rejected'; record(task, input.action, actor, input.owner_quote)
+        // Close-out: the full task goes to the batch archive; the live state
+        // keeps a small tombstone so dependency checks still resolve it.
+        this.store.archiveTask(task.card.batch, structuredClone(task))
+        state.tasks[task.card.id] = { archived: true, status: task.status, round: task.round,
+          card: { id: task.card.id, batch: task.card.batch, item: task.card.item, title: task.card.title },
+          owner_decision: task.owner_decision }
+        extra.cleanup = this.cleanupWorktree(task)
       } else if (input.action === 'block') {
         if (baseRole(actor.agent) === 'studio') dev(actor, state, task)
         else worker(actor, task, ['executor', 'reviewer', 'reviewer-fast'])
@@ -237,8 +286,25 @@ export class Engine {
         dev(actor, state, task); status(task, ['verifying']); this.recoverVerification(task)
         record(task, 'recover-interrupted-verification', actor)
       } else throw new Error(`studio: unknown action: ${input.action}`)
-      return { id: task.card.id, status: task.status, round: task.round, next: NEXT[task.status], notes: task.review?.notes ?? [] }
+      return { id: task.card.id, status: task.status, round: task.round, next: NEXT[task.status], notes: task.review?.notes ?? [], ...extra }
     })
+  }
+  /** Remove the item's worktree after a close-out; never touches the main tree or dirty copies. */
+  cleanupWorktree(task) {
+    const notes = []
+    try {
+      const canonical = (p) => fs.realpathSync.native(p)
+      const worktree = canonical(task.worktree)
+      if (worktree === canonical(this.root)) return notes
+      if (git(worktree, 'status', '--porcelain').trim()) { notes.push(`worktree left with uncommitted changes: ${task.worktree}`); return notes }
+      const branch = (worktreeInfo(this.root).find((entry) => { try { return canonical(entry.path) === worktree } catch { return false } }) ?? {}).branch ?? null
+      git(this.root, 'worktree', 'remove', task.worktree)
+      if (branch) { try { git(this.root, 'branch', '-d', branch) } catch { notes.push(`branch left (not merged): ${branch}`) } }
+      notes.push(`worktree removed: ${task.worktree}`)
+    } catch (error) {
+      notes.push(`worktree cleanup failed: ${error.message}`)
+    }
+    return notes
   }
   recoverVerification(task) {
     if (task.verification_pid) {

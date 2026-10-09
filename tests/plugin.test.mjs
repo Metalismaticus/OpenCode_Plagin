@@ -5,6 +5,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import plugin from '../.opencode/plugins/studio.ts'
 import { runPython } from '../.opencode/studio/runtime/python.mjs'
+import { rotateIfNeeded } from '../.opencode/studio/runtime/telemetry.mjs'
+import os from 'node:os'
 import { repo, owner, coder, reviewer, copyTree } from './helpers.mjs'
 
 const project = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
@@ -85,6 +87,17 @@ test('new session can resolve its default agent at context time', async (t) => {
   await h.hooks.get('session.prompt')({ sessionID: owner.sessionID, prompt: { text: 'Привет' } })
   h.hooks.get('session.context')({ sessionID: owner.sessionID, agent: 'studio', system: [] })
   assert.match((await h.call({ action: 'bind', mode: 'concept' })).content, /concept/)
+})
+test('usage log rotates when it exceeds the limit', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'studio-rot-'))
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }))
+  const file = path.join(dir, 'studio-usage.jsonl')
+  fs.writeFileSync(file, 'x'.repeat(20))
+  assert.equal(rotateIfNeeded(file, 10), true)
+  assert.equal(fs.existsSync(`${file}.1`), true); assert.equal(fs.existsSync(file), false)
+  fs.writeFileSync(file, 'y')
+  assert.equal(rotateIfNeeded(file, 10), false)
+  assert.equal(fs.existsSync(file), true)
 })
 test('Python adapter preserves Cyrillic JSON stdin', async (t) => {
   const r = repo(t); const script = path.join(r.root, 'echo.py')
