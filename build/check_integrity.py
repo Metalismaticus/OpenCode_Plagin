@@ -14,16 +14,24 @@ def check():
     lock = json.loads((ROOT / 'build/source-lock.json').read_text(encoding='utf-8'))
     models = json.loads((ROOT / 'build/models.json').read_text(encoding='utf-8'))
     roles = json.loads((ROOT / 'build/roles.json').read_text(encoding='utf-8'))
-    if set(models['roles']) != set(roles):
-        errors.append('Role/model registries differ')
-    for role, model in models['roles'].items():
+    overrides = models.get('roles') or {}
+    for role in sorted(set(overrides) - set(roles)):
+        errors.append(f'Override for unknown role: {role}')
+    for role in roles:
         primary = OC / 'agents' / (role + '.md')
         fallback = OC / 'agents' / (role + '-any.md')
-        expected = model if '/' in model else f"{models['provider']}/{model}"
-        if f'model: {expected}\n' not in primary.read_text(encoding='utf-8'):
-            errors.append(f'Wrong model: {role}')
-        if re.search(r'^model:', fallback.read_text(encoding='utf-8'), re.M):
-            errors.append(f'Fallback must inherit session model: {role}')
+        if fallback.is_file():
+            errors.append(f'Fallback duplicate must not exist (inheritance is official): {role}-any.md')
+        if not primary.is_file():
+            errors.append(f'Missing agent file: {role}')
+            continue
+        text = primary.read_text(encoding='utf-8')
+        if role in overrides:
+            expected = overrides[role] if '/' in overrides[role] else f"{models['provider']}/{overrides[role]}"
+            if f'model: {expected}\n' not in text:
+                errors.append(f'Wrong model: {role}')
+        elif re.search(r'^model:', text, re.M):
+            errors.append(f'Must inherit the chat model (no model: line): {role}')
     if re.search(r'^model:', (OC / 'agents/studio.md').read_text(encoding='utf-8'), re.M):
         errors.append('studio must follow the chat picker')
     for original, spec in lock['protocols'].items():

@@ -105,8 +105,9 @@ test('Python adapter preserves Cyrillic JSON stdin', async (t) => {
   const result = await runPython(script, { text: 'Русский путь и вопрос' })
   assert.equal(result.code, 0); assert.equal(result.stdout, 'Русский путь и вопрос')
 })
-test('context detects a worker silently inheriting the coordinator’s model', async (t) => {
+test('a worker on any model is fine: roles inherit the chat picker', async (t) => {
   const h = await host(t)
-  assert.throws(() => h.hooks.get('session.context')({ sessionID: coder.sessionID, agent: 'executor', model: { providerID: 'opencode-go', id: 'glm-5.3' }, system: [] }), /model routing mismatch/)
-  assert.doesNotThrow(() => h.hooks.get('session.context')({ sessionID: coder.sessionID, agent: 'executor-any', model: { providerID: 'owner', id: 'chosen-model' }, system: [] }))
+  const event = { sessionID: coder.sessionID, agent: 'executor', model: { providerID: 'owner', id: 'chosen-model' }, system: [] }
+  h.hooks.get('session.context')(event)
+  assert.equal(event.system.length, 0)  // no assigned task yet, no mismatch errors
 })

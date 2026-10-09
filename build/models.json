@@ -1,20 +1,5 @@
 {
-  "$comment": "Single source of subagent model routing. studio follows the chat picker. Full provider/model ids may override provider per role.",
+  "$comment": "Subagent models inherit the chat picker (owner's decision, Oct 2026): role files carry no model: line. Fine per-role routing may return later: put role -> model into roles and run python -X utf8 build/configure.py.",
   "provider": "opencode-go",
-  "roles": {
-    "executor": "glm-5.3-flash",
-    "reviewer": "glm-5.3",
-    "reviewer-fast": "glm-5.3-flash",
-    "designer": "glm-5.3",
-    "reference": "glm-5.3",
-    "scout": "glm-5.3-flash",
-    "assets": "glm-5.3-flash",
-    "product": "glm-5.3",
-    "architect": "glm-5.3"
-  },
-  "$comment_roles": "studio (координатор) — НАМЕРЕННО без модели в файле: работает на модели, выбранной в пикере чата; без выбора — глобальный дефолт opencode-go/glm-5.3 (~/.config/opencode/opencode.json). Это рычаг владельца: например, переключить координатора на зрячую модель для разбора картинок. Субагенты — только здесь.",
-  "rationale": {
-    "glm-5.3": "complex design, architecture and full review",
-    "glm-5.3-flash": "implementation, reconnaissance, light review and asset mechanics"
-  }
+  "roles": {}
 }

@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Перешить модели агентов студии по build/models.json.
+"""Сгенерировать агентов студии по build/roles.json (и build/models.json).
 
-ЕДИНСТВЕННОЕ место роутинга — models.json. Поменяли модель/провайдера —
-запустите:  python -X utf8 build/configure.py
+Модели агентов наследуются из выбранного в чате (решение владельца,
+октябрь 2026): файлы ролей пишутся БЕЗ строки `model:`. Тонкую маршрутизацию
+по ролям владелец вернёт позже сам: роль → модель в `roles` models.json —
+тогда configure добавит этой роли строку `model:` (переопределение).
 
-Проходит по .opencode/agents/<роль>.md, в frontmatter заменяет строку
-`model: …` на модель роли из models.json. Новой роли нужен файл агента.
+Запуск:  python -X utf8 build/configure.py
+
+Сначала СВЕРЯЕТ и только потом пишет (ошибка не оставляет частично
+обновлённую конфигурацию): переопределение из models.json называет только
+известные роли; дублей `<роль>-any.md` больше нет — наследование официальное.
 """
 import json
 import os
@@ -18,39 +23,29 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 AGENTS = os.path.normpath(os.path.join(HERE, "..", ".opencode", "agents"))
 
 
-def generate_fallbacks(agents_dir, roles):
-    """Запасные копии <роль>-any: тот же протокол, БЕЗ строки model —
-    наследуют модель сессии (координатор зовёт их при недоступности
-    основной модели). Генерируются заново при каждом запуске configure."""
-    import re as _re
-    made = 0
-    for role in roles:
-        src = os.path.join(agents_dir, role + ".md")
-        if not os.path.isfile(src):
-            continue
-        text = open(src, encoding="utf-8").read()
-        no_model = _re.sub(r"(?m)^model: .*\n", "", text, count=1)
-        no_model = _re.sub(
-            r"(?m)^(description: .*)$",
-            r"\1 · FALLBACK-копия без своей модели — наследует модель сессии (зовёт координатор, когда основная недоступна)",
-            no_model, count=1)
-        dst = os.path.join(agents_dir, role + "-any.md")
-        with open(dst, "w", encoding="utf-8", newline="") as f:
-            f.write(no_model)
-        made += 1
-    return made
-
-
 def main():
     cfg = json.load(open(os.path.join(HERE, "models.json"), encoding="utf-8"))
-    provider = cfg["provider"]
+    provider = cfg.get("provider", "")
     roles = json.load(open(os.path.join(HERE, "roles.json"), encoding="utf-8"))
-    extra = sorted(set(cfg['roles']) - set(roles))
-    gone = sorted(set(roles) - set(cfg['roles']))
-    if extra or gone:
-        raise SystemExit('roles.json and models.json must name exactly the same roles: '
-                         f'models.json extra {extra or "—"}, roles.json extra {gone or "—"} '
-                         '(no agent file was touched)')
+    overrides = cfg.get("roles") or {}
+
+    # ---- фаза 1: сверка ДО записи ---------------------------------------
+    unknown = sorted(set(overrides) - set(roles))
+    if unknown:
+        print("models.json переопределяет неизвестные роли — НИЧЕГО не записано:",
+              file=sys.stderr)
+        for role in unknown:
+            print(f"  - {role!r} нет в roles.json", file=sys.stderr)
+        return 1
+    stale = sorted(f for f in os.listdir(AGENTS) if f.endswith("-any.md"))
+    if stale:
+        print("Дубли -any больше не нужны (наследование официальное); удалить:",
+              file=sys.stderr)
+        for f in stale:
+            print(f"  - .opencode/agents/{f}", file=sys.stderr)
+        return 1
+
+    # ---- фаза 2: запись (всё проверено) ---------------------------------
     for role, settings in roles.items():
         permissions = [
             '  - { action: question, resource: "*", effect: deny }',
@@ -61,9 +56,14 @@ def main():
             permissions.append('  - { action: edit, resource: "*", effect: deny }')
         if not settings['shell']:
             permissions.append('  - { action: shell, resource: "*", effect: deny }')
-        model = cfg['roles'][role]
-        model_id = model if '/' in model else f'{provider}/{model}'
-        text = ('---\n' + f"description: {settings['description']}\nmode: subagent\nmodel: {model_id}\nsteps: {settings['steps']}\npermissions:\n" + '\n'.join(permissions) + '\n---\n\n'
+        model_line = ''
+        if role in overrides:
+            model = overrides[role]
+            model_id = model if '/' in model else f'{provider}/{model}'
+            model_line = f'model: {model_id}\n'
+        text = ('---\n' + f"description: {settings['description']}\nmode: subagent\n"
+                + model_line + f"steps: {settings['steps']}\npermissions:\n"
+                + '\n'.join(permissions) + '\n---\n\n'
                 + f"You are {role}, responsible only for this role. Load `{settings['skill']}` before work.\n"
                 + 'Speak and report in Russian, in the owner\'s product vocabulary.\n'
                 + 'No chat history: use the task id and source paths supplied by the coordinator.\n'
@@ -74,26 +74,7 @@ def main():
                 + 'which class, node, shader or algorithm to use. Never accept your own result.\n'
                 + 'Do not commit, push, weaken tests or change process baselines.\n')
         Path(AGENTS, role + '.md').write_text(text, encoding='utf-8')
-    missing = []
-    for role, model in cfg["roles"].items():
-        path = os.path.join(AGENTS, role + ".md")
-        if not os.path.isfile(path):
-            missing.append(role)
-            continue
-        with open(path, encoding="utf-8") as f:
-            text = f.read()
-        model_id = model if '/' in model else f'{provider}/{model}'
-        new = re.sub(r"^model: .*$", f"model: {model_id}",
-                     text, count=1, flags=re.M)
-        if new != text:
-            with open(path, "w", encoding="utf-8", newline="") as f:
-                f.write(new)
-        print(f"{role:12} -> {model_id}")
-    if missing:
-        print("нет файлов агентов:", ", ".join(missing), file=sys.stderr)
-        return 1
-    made = generate_fallbacks(AGENTS, cfg["roles"].keys())
-    print(f"fallback-копий сгенерировано: {made}")
+        print(f"{role:14} -> {'модель ' + model_line.strip()[7:] if model_line else 'наследует из чата'}")
     return 0
 
 

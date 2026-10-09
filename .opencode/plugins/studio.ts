@@ -1,4 +1,5 @@
 /** studio: OpenCode V2 adapter; workflow, policy, telemetry and Python hooks are separate modules. */
+import type { Plugin } from "@opencode/plugin"
 import path from "node:path"
 import { Engine } from "../studio/runtime/engine.mjs"
 import { isStudioRole, baseRole } from "../studio/runtime/contracts.mjs"
@@ -6,8 +7,10 @@ import { workflowSchema } from "../studio/runtime/schema.mjs"
 import { editAllowed, shellAllowed } from "../studio/runtime/policy.mjs"
 import { runPython } from "../studio/runtime/python.mjs"
 import { flushUsage } from "../studio/runtime/telemetry.mjs"
-import { checkModel } from "../studio/runtime/models.mjs"
 
+// Type-only import of @opencode/plugin: erased at runtime, so the deployed
+// plugin stays dependency-free; the `satisfies Plugin` below type-checks the
+// hook wiring when the devDependency is installed.
 export default {
   id: "studio",
   async setup(ctx) {
@@ -98,7 +101,6 @@ export default {
     await ctx.session.hook("context", (event) => {
       knownAgents.set(event.sessionID, event.agent)
       if (!isStudioRole(event.agent)) return
-      checkModel(root, event.agent, event.model)
       try {
         const state = engine.store.read()
         if (baseRole(event.agent) === "studio") {
@@ -139,4 +141,4 @@ export default {
     })()
     return () => controller.abort()
   },
-}
+} satisfies Plugin

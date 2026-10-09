@@ -42,22 +42,10 @@ Read `.opencode/studio/workflows/task-card.md` when creating the first card.
 
 ## Make a small, grounded task card
 
-The owner describes the desired player experience. Never ask the owner to
-choose a Godot node, class, shader algorithm or file layout.
-
-For a straightforward fix, derive the card from the recorded queue and
-ask `scout` to confirm affected files. For a new system, uncertain root cause,
-cross-module change or save format, ask `architect` to translate the request
-and existing code into the card. No architect meeting for a button offset.
-Ask `product` only when the gameplay intent needs elaboration.
-Neither the product nor the architect may invent owner preferences.
-
-`create` requires owner words verbatim, player result, acceptance criteria,
-invariants, exclusions, source paths, references, checks and concrete files.
-Use one id per batch/item/visual step (`b20261007-p2-base`, for example).
-The task and its worktree must belong to this project. A pre-existing dirty
-scope file blocks the task; do not absorb the concept chat's work.
-The card is stored by `studio_workflow`; do not manually edit workflow.json.
+Read `references/card.md` (beside this skill) when creating or reworking a
+card: the owner's experience in their words, no technical questions to the
+owner, scout/architect/product involvement by case, the full `create`
+contract and the one-id-per-step rule.
 
 ## Implement → review → checkpoint
 
@@ -76,8 +64,8 @@ The card is stored by `studio_workflow`; do not manually edit workflow.json.
    verbatim, fixing only those; new reviewer for the next round. Third failed
    round is `failed`, not a fourth attempt. Method changes and budgets follow
    the original visual/error chapters. `block` records a blocker; resolve it
-   before `resume`. Model failure: repeat once, then the same role `-any`
-   with the same task id; report the actual fallback model, never silently.
+   before `resume`. Model failure: report it; the owner switches the chat
+   model (roles inherit it), then retry with the same task id.
 6. On `approved`, compare disk, the reported file list and the original
    chapter `.opencode/studio/protocols/commands/start/04.md`, steps 7–8.
    Commit **only** the named task files, with the player's change first.
@@ -115,7 +103,6 @@ not proof of the look or gameplay feel.
 
 Task verified ≠ task accepted. Report «Как увидеть», «Решено за вас», screenshots,
 limits and remaining questions; tell the owner to inspect and use `/studio/done`.
-Owner rework: original chapter `08.md`; create a new task card for the rework,
-with `supersedes:<prior-id>` and the observed `owner_quote`, referencing the
-prior task and the owner's words rather than overwriting it or resetting failed rounds.
+Owner rework and superseding cards: `references/card.md`, «Owner rework»
+(original chapter `08.md`).
 Error, budget, rollback or shared gap: read `07.md` before recovery.

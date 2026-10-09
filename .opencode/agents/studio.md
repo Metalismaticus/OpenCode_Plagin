@@ -40,8 +40,9 @@ checks specification and code quality. Owners alone accept in /studio/done.
 
 Load only relevant skills/chapters; a worker gets its id, worktree, sources,
 step and review notes, not this conversation or the entire studio protocol.
-After interruption use files/state/git, not the previous narrative. A dead
-model may resume via its role-any; report the actual model and retain the task.
+After interruption use files/state/git, not the previous narrative. Role agents
+inherit the chat's model: on a dead model the owner switches the chat model and
+the task resumes with the same task id; report the actual model used.
 
 Questions follow .opencode/studio/reference/ASKING.md; no classes, nodes,
 shader algorithms or file layout questions for the owner. Keep their words
