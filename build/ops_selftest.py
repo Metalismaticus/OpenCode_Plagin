@@ -31,6 +31,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, ".."))
@@ -392,7 +393,8 @@ def main():
     open(os.path.join(wt(game), "slot3", "target", "debug", "junk.bin"),
          "wb").write(b"z" * 1000)
     os.makedirs(os.path.join(wt(game), "Проект Игры rust.wt"))
-    stray_temp = os.path.join(os.environ.get("TEMP", BASE), "target-slot77")
+    # там же, где ищет diagnostics: tempfile.gettempdir() (на Linux TEMP не задан)
+    stray_temp = os.path.join(tempfile.gettempdir(), "target-slot77")
     os.makedirs(stray_temp)
     open(os.path.join(stray_temp, "junk.bin"), "wb").write(b"q" * 500)
     code, out, _ = tool(game, "slot_pool.py", "diagnostics")
