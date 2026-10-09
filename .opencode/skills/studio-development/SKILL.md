@@ -27,6 +27,12 @@ before creating a UI card; include it as a source/reference. It remains a
 design record, while implementation files form the independent item checkpoint.
 
 If parallelism is enabled, load `studio-wave`; otherwise do not load it.
+Parallel items take slots from the project's bounded pool:
+`python -X utf8 tools/slot_pool.py acquire --item p<N>` — reused slots, build
+caches survive items; pass the returned path as the card worktree and call
+`release` after the checkpoint. A slot_pool/run_check exit code 3 («мало
+места») stops the batch with the printed reason — no retry loops; free
+caches with `tools/slot_pool.py clean-cache --free` or ask the owner.
 For `[вид]` or `[ощущение]`, load `studio-vid` before taking the batch.
 Read `.opencode/studio/workflows/task-card.md` when creating the first card.
 

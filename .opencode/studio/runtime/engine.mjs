@@ -289,13 +289,24 @@ export class Engine {
       return { id: task.card.id, status: task.status, round: task.round, next: NEXT[task.status], notes: task.review?.notes ?? [], ...extra }
     })
   }
-  /** Remove the item's worktree after a close-out; never touches the main tree or dirty copies. */
+  /** Remove the item's worktree after a close-out; never touches the main tree, dirty copies or pool slots. */
   cleanupWorktree(task) {
     const notes = []
     try {
       const canonical = (p) => fs.realpathSync.native(p)
       const worktree = canonical(task.worktree)
       if (worktree === canonical(this.root)) return notes
+      // A slot registered in tools/slot_pool.py belongs to the pool: leave it
+      // for reuse; the pool's release/sync manages its lifecycle.
+      const poolFile = path.join(path.dirname(this.root), path.basename(this.root) + '.wt', 'slots.json')
+      try {
+        const pool = JSON.parse(fs.readFileSync(poolFile, 'utf8')).slots ?? {}
+        const name = path.basename(worktree)
+        if (/^slot\d+$/.test(name) && pool[name]) {
+          notes.push(`pool slot ${name} left for reuse; tools/slot_pool.py release manages it`)
+          return notes
+        }
+      } catch {}
       if (git(worktree, 'status', '--porcelain').trim()) { notes.push(`worktree left with uncommitted changes: ${task.worktree}`); return notes }
       const branch = (worktreeInfo(this.root).find((entry) => { try { return canonical(entry.path) === worktree } catch { return false } }) ?? {}).branch ?? null
       git(this.root, 'worktree', 'remove', task.worktree)
