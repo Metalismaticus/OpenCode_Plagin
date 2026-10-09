@@ -33,6 +33,10 @@ caches survive items; pass the returned path as the card worktree and call
 `release` after the checkpoint. A slot_pool/run_check exit code 3 («мало
 места») stops the batch with the printed reason — no retry loops; free
 caches with `tools/slot_pool.py clean-cache --free` or ask the owner.
+After writing the batch into `docs/BATCH.md`, run
+`python -X utf8 tools/batch_check.py` and fix its findings until green:
+a batch inside the sample comment, «Пусто.» beside a live batch, waves not
+covering an in-work item — all machine-checked, red blocks the run.
 For `[вид]` or `[ощущение]`, load `studio-vid` before taking the batch.
 Read `.opencode/studio/workflows/task-card.md` when creating the first card.
 

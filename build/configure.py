@@ -45,8 +45,12 @@ def main():
     cfg = json.load(open(os.path.join(HERE, "models.json"), encoding="utf-8"))
     provider = cfg["provider"]
     roles = json.load(open(os.path.join(HERE, "roles.json"), encoding="utf-8"))
-    if set(roles) != set(cfg['roles']):
-        raise SystemExit('roles.json and models.json must name exactly the same roles')
+    extra = sorted(set(cfg['roles']) - set(roles))
+    gone = sorted(set(roles) - set(cfg['roles']))
+    if extra or gone:
+        raise SystemExit('roles.json and models.json must name exactly the same roles: '
+                         f'models.json extra {extra or "—"}, roles.json extra {gone or "—"} '
+                         '(no agent file was touched)')
     for role, settings in roles.items():
         permissions = [
             '  - { action: question, resource: "*", effect: deny }',
