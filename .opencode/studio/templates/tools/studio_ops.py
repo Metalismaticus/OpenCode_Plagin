@@ -241,6 +241,11 @@ def load_plan(root):
                                     "quick/item/affected/full/long")
         if not isinstance(c.get("areas", []), list):
             raise OpError(EXIT_BAD, f"{p}: areas проверки «{name}» — список строк")
+    builds = plan.get("builds", "none")
+    if builds not in ("app", "none"):
+        raise OpError(EXIT_BAD, f"{p}: builds — \"app\" (проверкам нужно готовое приложение, "
+                                f"сборку гонит run_check) или \"none\" (движок/владелец запускают "
+                                f"сами), получено {builds!r}")
     return plan
 
 
