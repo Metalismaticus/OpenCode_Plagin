@@ -19,6 +19,15 @@ The task and its worktree must belong to this project. A pre-existing dirty
 scope file blocks the task; do not absorb the concept chat's work.
 The card is stored by `studio_workflow`; do not manually edit workflow.json.
 
+## Slice before you run
+
+A card is executable when it is small: about four acceptance criteria, up to
+six files, one system, and never a format change together with a new system.
+Anything bigger is split into step cards - each with its own id and its own
+green checkpoint (visual items are split by design: stand → base → choice →
+embedding). A step ceiling hit means the card was too big: park the work,
+split the remainder, rerun as smaller cards; do not extend limits.
+
 ## Owner rework
 
 Owner rework: original chapter `08.md`; create a new task card for the rework,

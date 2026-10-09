@@ -106,3 +106,7 @@ limits and remaining questions; tell the owner to inspect and use `/studio/done`
 Owner rework and superseding cards: `references/card.md`, «Owner rework»
 (original chapter `08.md`).
 Error, budget, rollback or shared gap: read `07.md` before recovery.
+A step or budget ceiling is a signal to split, not to wait: the parked
+`rounds/p<N>-стоп/` work is preserved; split the remainder into two smaller
+cards and continue; mark `ждёт` only when the split needs the owner. Never
+extend a budget or relaunch the same card overnight.
