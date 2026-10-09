@@ -13,12 +13,16 @@ slot_pool.py) и показывает эффект изменений:
 - нехватки диска (disk_stop) и их причины;
 - назначение/освобождение слотов.
 
+`--tokens` — токены моделей из `usage/studio-usage.jsonl` (+ ротация `.1`):
+сумма по агентам и по сессиям (sid) — сессии склеиваются с пунктами по
+`history` задачи (`begin` — исполнители, `review` — проверяющие).
+
 СУММАРНОЕ время операций ≠ ФАКТИЧЕСКОЕ время: при параллельном исполнении
 операции идут одновременно — сводка показывает обе: сумму dur_ms по событиям
 и размах (последнее − первое) по часам. Никаких секретов: в файле только
 перечисленные поля.
 
-Запуск: python -X utf8 tools/ops_report.py [--root <путь>] [--since <ISO-дата>]
+Запуск: python -X utf8 tools/ops_report.py [--root <путь>] [--since <ISO-дата>] [--tokens]
 """
 import argparse
 import datetime
@@ -31,11 +35,67 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import studio_ops as ops  # noqa: E402
 
 
+def usage_events(root, since=None):
+    """Строки токенов из usage/studio-usage.jsonl и его ротации .1, по времени."""
+    base = os.path.join(ops.wt_dir(root), "usage", "studio-usage.jsonl")
+    rows = []
+    for path in (base, f"{base}.1"):
+        if not os.path.isfile(path):
+            continue
+        with open(path, encoding="utf-8-sig") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    row = json.loads(line)
+                except ValueError:
+                    continue
+                if since and row.get("t", "") < since:
+                    continue
+                rows.append(row)
+    rows.sort(key=lambda r: r.get("t", ""))
+    return rows
+
+
+def tokens_of(row):
+    return ((row.get("in") or 0) + (row.get("out") or 0) + (row.get("cacheRead") or 0)
+            + (row.get("cacheWrite") or 0) + (row.get("reasoning") or 0))
+
+
+def token_lines(rows):
+    if not rows:
+        return False
+    total = sum(tokens_of(r) for r in rows)
+    cost = sum(r.get("cost") or 0 for r in rows)
+    print(f"токены моделей: {total:,} · стоимость ${cost:.2f} · записей {len(rows)}")
+    by_agent = {}
+    for r in rows:
+        key = r.get("agent") or "?"
+        by_agent[key] = [by_agent.get(key, [0, 0.0])[0] + tokens_of(r),
+                         by_agent.get(key, [0, 0.0])[1] + (r.get("cost") or 0)]
+    print("по агентам: " + " · ".join(f"{a} {t:,} (${c:.2f})"
+                                      for a, (t, c) in sorted(by_agent.items(), key=lambda kv: -kv[1][0])))
+    by_sid = {}
+    for r in rows:
+        sid = r.get("sid") or "?"
+        acc = by_sid.setdefault(sid, [0, 0.0, ""])
+        acc[0] += tokens_of(r)
+        acc[1] += r.get("cost") or 0
+        acc[2] = r.get("agent") or acc[2]
+    print("по сессиям (топ-20; sid → пункт по history задачи в studio_workflow get):")
+    for sid, (t, c, agent) in sorted(by_sid.items(), key=lambda kv: -kv[1][0])[:20]:
+        print(f"  {sid} · {agent} · {t:,} · ${c:.2f}")
+    return True
+
+
 def main(argv=None):
     ops.utf8_stdio()
     ap = argparse.ArgumentParser(add_help=False, description="сводка телеметрии операций")
     ap.add_argument("--root", help="корень проекта (по умолчанию — ищется вверх)")
     ap.add_argument("--since", help="события с этой ISO-даты (например, со «Снята …»)")
+    ap.add_argument("--tokens", action="store_true",
+                    help="сводка токенов моделей по агентам и сессиям (usage/studio-usage.jsonl + ротация)")
     try:
         args = ap.parse_args(argv)
     except SystemExit as e:
@@ -49,12 +109,17 @@ def main(argv=None):
     except ops.OpError as e:
         print(f"ошибка: {e.msg}", file=sys.stderr)
         return e.code
+    rows = usage_events(root, args.since) if args.tokens else []
     if not events:
+        if token_lines(rows):
+            return ops.EXIT_OK
         print(f"телеметрии нет: {ops.ops_log(root)}")
         return ops.EXIT_OK
     if args.since:
         events = [e for e in events if e.get("t", "") >= args.since]
     if not events:
+        if token_lines(rows):
+            return ops.EXIT_OK
         print("после фильтра --since событий нет")
         return ops.EXIT_OK
 
@@ -112,6 +177,8 @@ def main(argv=None):
     if bc:
         bad = sum(1 for e in bc if not e.get("ok"))
         print(f"batch_check: {len(bc)} прогонов · красных {bad}")
+    if args.tokens:
+        token_lines(rows)
     return ops.EXIT_OK
 
 
