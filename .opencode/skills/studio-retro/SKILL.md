@@ -26,5 +26,10 @@ notes lacked the four parts or the round re-opened scope instead of verifying
 the stored notes. Fix propagation goes to the delta-review rules, not to
 opinions.
 
+**Дефекты → проверки.** List every user bug fixed in this batch and ask for
+each: which permanent check now fails on this defect class (a file the
+registry finds by itself)? A fix without its check leaves the circle open —
+it goes into the report as a debt, not an opinion.
+
 Original feature rules remain in force. API routing comes from the studio
 coordinator and role skills; no old instruction may bypass runtime gates.

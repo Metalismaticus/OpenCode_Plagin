@@ -74,6 +74,10 @@ The card is stored by `studio_workflow`; do not manually edit workflow.json.
    `BATCH.md` is a separate batch commit. Call `checkpoint` with its full SHA.
    The runtime checks item ownership, content digest and committed scope.
 
+A `[баг]` fix closes its circle only when the same batch lands the permanent
+check that fails on this defect class (a file the check registry finds by
+itself); the reviewer requests exactly that when it is missing.
+
 The original chapter's old **one-line agent prompt** is superseded by a task
 id and source paths. It must not bypass create/begin/submit/review/checkpoint.
 Original queue, rollback, snapshots, visual steps and test policies stay in force.
