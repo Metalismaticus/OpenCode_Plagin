@@ -69,6 +69,11 @@ def main():
         image = Image
 
     out = Path(args.out)
+    # повторный запуск с меньшим --runs не оставляет старых прогонов
+    if out.is_dir():
+        for old in out.glob("r*"):
+            if old.is_dir() and (not old.name[1:].isdigit() or int(old.name[1:]) > args.runs):
+                shutil.rmtree(old)
     frames = {"наш": ours, "образец": ref}
     runs = {}
     for n in range(1, args.runs + 1):

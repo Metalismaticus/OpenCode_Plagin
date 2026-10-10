@@ -25,12 +25,12 @@ tests. Vision unavailable must remain a limitation, not an invented «Вижу»
 Numbers do not judge similarity. In look mode the «Против образца» verdict
 is set by the blind pair: `python -X utf8 tools/blind_pair.py` builds two
 anonymous randomized copies of the recommended variant and the passport
-reference; record both blind picks in the report **before** opening
-`map.json`, then name the result. `APPROVED` requires «Слепая пара:
-выиграна (r1, r2)»; a lost or «не знаю» pair is «явно не похоже» even
-with every number met. Without vision the pair stays unsaid («Не судил:
-слепая пара — нет зрения» in the «Ограничение» line) — never an invented
-comparison.
+reference; judge and record both blind picks **before** opening `map.json`
+or any labeled sheet - the pair comes first, labels bias - then name the
+result. `APPROVED` requires «Слепая пара: выиграна (r1, r2)»; a lost or
+«не знаю» pair is «явно не похоже» even with every number met. Without
+vision the pair stays unsaid («Не судил: слепая пара — нет зрения» in the
+«Ограничение» line) — never an invented comparison.
 
 **Round 1** is the full review: specification, quality, all criteria.
 **Rounds 2+ are delta reviews** (the session is still fresh; the scope is not):
