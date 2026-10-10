@@ -32,7 +32,9 @@ Technical interpretation never overwrites the owner's words or prior rejection.
 ```
 
 Allowed kinds: code, bug, ui, visual, feel, data, cleanup, measurement.
-`sources` must exist. Concrete files are planned internally; a required new
+`sources` must exist. `references` may carry the scout read map: which files
+to open and which to ignore - the executor reads by it instead of wandering.
+Concrete files are planned internally; a required new
 file is amended by the coordinator, with a reason, before the executor edits it.
 No dirty pre-existing file may be included. Sources in Markdown remain authoritative
 for meaning; the machine owns stage/round/roles/check evidence.

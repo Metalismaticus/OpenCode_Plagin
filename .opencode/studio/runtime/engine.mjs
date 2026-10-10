@@ -48,6 +48,14 @@ function record(task, action, actor, detail = '') {
   task.history.push({ at: at(), action, session: actor.sessionID, agent: actor.agent, detail })
   task.history = task.history.slice(-40)
 }
+/** Готовая строка таблицы docs/BATCH.md для этого состояния задачи. */
+function batchLine(task) {
+  const statusText = task.status === 'implementing' ? `в работе · круг ${task.round}/3`
+    : task.status === 'changes_requested' ? `в работе · круг ${task.round}/3`
+    : task.status === 'reviewing' ? `готов к проверке · круг ${task.round}/3`
+    : task.status
+  return `| ${task.card.item} | — | ${task.card.title} | ${task.card.goal} | ${statusText} | ${task.card.how_to_see} | — | — |`
+}
 function dependencies(state, task, accepted = false) {
   for (const id of task.card.depends_on) {
     const upstream = taskOf(state, id)
@@ -286,7 +294,7 @@ export class Engine {
         dev(actor, state, task); status(task, ['verifying']); this.recoverVerification(task)
         record(task, 'recover-interrupted-verification', actor)
       } else throw new Error(`studio: unknown action: ${input.action}`)
-      return { id: task.card.id, status: task.status, round: task.round, next: NEXT[task.status], notes: task.review?.notes ?? [], ...extra }
+      return { id: task.card.id, status: task.status, round: task.round, next: NEXT[task.status], notes: task.review?.notes ?? [], batch: batchLine(task), ...extra }
     })
   }
   /** Remove the item's worktree after a close-out; never touches the main tree, dirty copies or pool slots. */

@@ -60,8 +60,15 @@ test('exactly three repair rounds; reviewer is fresh each round', async (t) => {
   }
   await assert.rejects(r.call('begin', {}, coder), /failed/)
 })
-test('a blocking review note must reference a file or path', async (t) => {
-  const r = repo(t); await r.start(); await r.submit()
+test('every action answer carries a ready BATCH table line', async (t) => {
+  const r = repo(t); await r.start()
+  const done = await r.submit()
+  assert.ok(done.batch.startsWith('| 1 | — | Реакция дерева'), done.batch)
+  assert.match(done.batch, /готов к проверке · круг 1\/3/)
+  const approved = await r.approve()
+  assert.match(approved.batch, new RegExp(r.card.how_to_see))
+})
+test('a blocking review note must reference a file or path', async (t) => {  const r = repo(t); await r.start(); await r.submit()
   await assert.rejects(r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['стало некрасиво'] }, reviewer), /file or path reference/)
   await r.call('review', { verdict: 'CHANGES_REQUESTED', notes: ['tree.js: удар не работает — готово, когда прочность падает'] }, reviewer)
   assert.equal(r.engine.store.read().tasks[r.card.id].status, 'changes_requested')

@@ -18,8 +18,18 @@ the agreed scaffold and first frame; do not start gameplay features.
 Only `[вид]`, `[ui]` or another visible criterion needs `03.md` (look protocol).
 Only `[вид]`/`[ощущение]` needs `04.md` (base, variant techniques, embedding).
 For Godot use `studio-godot`; a shader also needs `studio-godot-shaders`.
-A procedure finding a required new file means a scope amendment: return a
-blocker with the path/reason before editing; the coordinator calls amend_scope.
+A procedure finding a required new file means scope growth, not a stop:
+keep working, write the file into your report `files` and «Решено за вас»,
+and finish the whole plan in this session. If `submit` is rejected for
+out-of-scope files, that is the coordinator's amendment to make (amend_scope)
+- your work stays on disk; the resumed submission is quick. Never edit files
+unrelated to the task: that remains out of scope.
+
+Keep the conversation light: read only the card's files and the scout map
+(coordinator puts it into `references`); before opening a file whole, grep it
+for the symbols you need; do not paste whole files into your replies - name
+paths and line ranges. A long conversation re-reads itself every step and
+costs the owner real money.
 
 Round 2–3: fix only the stored reviewer notes or owner's rework, do not restart.
 The runtime supplies the exact round, so never reset the counter in the card.

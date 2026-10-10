@@ -68,7 +68,7 @@ export function assertScope(task) {
     // The owner/concept chat edits Markdown concurrently. These files cannot
     // enter the item commit, but their appearance does not cancel an item.
     if (file.endsWith('.md') || file.startsWith('docs/refs/')) continue
-    throw new Error(`studio: changed file outside task: ${file}`)
+    throw new Error(`studio: changed file outside task: ${file} - coordinator: amend_scope with this file, then the executor resubmits (the work stays on disk)`)
   }
   for (const file of task.card.files) {
     if (Object.hasOwn(task.baseline, file)) throw new Error(`studio: scope contains pre-existing uncommitted work: ${file}`)

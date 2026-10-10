@@ -66,6 +66,12 @@ contract and the one-id-per-step rule.
    the original visual/error chapters. `block` records a blocker; resolve it
    before `resume`. Model failure: report it; the owner switches the chat
    model (roles inherit it), then retry with the same task id.
+   Out-of-scope files reported by the executor: `amend_scope` with the files
+   and relaunch the executor noting the work is already on disk - it checks
+   and resubmits; do not restart the item from zero. Paste the engine's
+   `batch` line from every studio_workflow answer into the BATCH table
+   instead of composing your own. Ask `scout` for a read map (which files to
+   open, which to ignore) and put it into the card's `references`.
 6. On `approved`, compare disk, the reported file list and the original
    chapter `.opencode/studio/protocols/commands/start/04.md`, steps 7–8.
    Commit **only** the named task files, with the player's change first.
