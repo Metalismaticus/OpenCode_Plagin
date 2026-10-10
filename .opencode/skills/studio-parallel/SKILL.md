@@ -7,6 +7,14 @@ description: Follow the original studio parallel process with stage-local contex
 
 Bind this primary chat as `development` using studio_workflow.
 
+N is the owner's manual calibration knob, not a verification gate: whenever
+N>1 and scout confirms the items are independent, waves run. The guards are
+real ones - the disk reserve (slot_pool exit 3 stops the batch), serialized
+heavy checks (M, usually 1: machine power and FPS measurements matter more
+than concurrency) and scout's independence verdict. After a run, `tidy`
+(disk) and `retro` (time per item) tell the owner whether to raise or lower
+N; no separate "parallel trial" permission is required.
+
 Read the introductory chapter, then each chapter **when that stage is reached**.
 Do not load all chapters at once; cross-references use this table.
 
