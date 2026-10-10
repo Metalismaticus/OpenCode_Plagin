@@ -59,7 +59,11 @@ contract and the one-id-per-step rule.
    remains an explicit limitation; numerical similarity cannot replace sight.
 4. The reviewer independently checks specification **and** code quality,
    one evidence row per criterion, before reading the executor's narrative.
-   It calls `review`: `APPROVED` needs both `spec:PASS` and `quality:PASS`.
+   In look mode it also runs the blind pair against the passport reference
+   (`tools/blind_pair.py`) and reports «Слепая пара: выиграна / не
+   выиграна / не судил: нет зрения». It calls `review`: `APPROVED` needs
+   both `spec:PASS` and `quality:PASS`, in look mode also a won blind pair
+   (no vision — «Ограничение» line, not an invented comparison).
 5. `changes_requested`: new executor with the existing id and review notes
    verbatim, fixing only those; new reviewer for the next round. Third failed
    round is `failed`, not a fourth attempt. Method changes and budgets follow
